@@ -1,0 +1,17 @@
+{
+  "name": "nanar-icloud-site",
+  "version": "1.0.0",
+  "description": "Nanar iCloud - Site web public",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "nodemailer": "^6.9.7"
+  }
+}
