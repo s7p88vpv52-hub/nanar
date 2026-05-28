@@ -139,6 +139,47 @@ app.get('/api/me', (req, res) => {
   res.json({ authenticated:false });
 });
 
+// ================== AVIS ==================
+
+// Récupérer les avis acceptés (public)
+app.get('/api/avis', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('avis')
+      .select('prenom_client, note, message, created_at')
+      .eq('statut', 'accepte')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    res.json({ success: true, data: data || [] });
+  } catch (e) {
+    res.json({ success: false, error: e.message });
+  }
+});
+
+// Laisser un avis (client connecté)
+app.post('/api/avis', async (req, res) => {
+  try {
+    if (!req.session || !req.session.user) {
+      return res.json({ success: false, error: 'Vous devez être connecté' });
+    }
+    const { note, message } = req.body;
+    if (!note || note < 1 || note > 5) return res.json({ success: false, error: 'Note invalide' });
+    if (!message || message.trim().length < 3) return res.json({ success: false, error: 'Message trop court' });
+
+    const { error } = await supabase.from('avis').insert([{
+      prenom_client: req.session.user.prenom,
+      email_compte: req.session.user.email,
+      note: parseInt(note),
+      message: message.trim(),
+      statut: 'en_attente'
+    }]);
+    if (error) throw error;
+    res.json({ success: true });
+  } catch (e) {
+    res.json({ success: false, error: e.message });
+  }
+});
+
 // ================== ROUTE PRINCIPALE (SPA) ==================
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
