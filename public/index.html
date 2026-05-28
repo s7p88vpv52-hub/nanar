@@ -174,6 +174,23 @@ select.form-input { cursor:pointer; }
   .section-title { font-size:24px; }
   .form-row { grid-template-columns:1fr; }
 }
+
+/* ===== AVIS ===== */
+.avis-carousel { overflow:hidden; margin-top:30px; position:relative; -webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent); mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent); }
+.avis-track { display:flex; gap:16px; animation:scroll 30s linear infinite; width:max-content; }
+.avis-track:hover { animation-play-state:paused; }
+@keyframes scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+.avis-card { background:white; border:0.5px solid var(--border); border-radius:16px; padding:22px; width:300px; flex-shrink:0; }
+.avis-stars { display:flex; gap:2px; color:#FBBF24; margin-bottom:12px; font-size:16px; }
+.avis-msg { font-size:13px; color:var(--text); line-height:1.6; margin-bottom:14px; }
+.avis-author { display:flex; align-items:center; gap:10px; }
+.avis-avatar { width:34px; height:34px; border-radius:50%; background:#EDE9FE; color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; }
+.avis-name { font-size:13px; font-weight:600; }
+.avis-date { font-size:11px; color:var(--text-tertiary); }
+.star-input { display:flex; gap:6px; font-size:28px; color:var(--border); }
+.star-input i { cursor:pointer; transition:0.15s; }
+.star-input i.active { color:#FBBF24; }
+.avis-empty { text-align:center; padding:40px; color:var(--text-tertiary); font-size:13px; }
 </style>
 </head>
 <body>
@@ -191,6 +208,7 @@ select.form-input { cursor:pointer; }
       <div class="nav-link" onclick="goto('debloquer')">Débloquer</div>
       <div class="nav-link" onclick="goto('licence')">Licence Pro</div>
       <div class="nav-link" onclick="goto('faq')">FAQ</div>
+      <div class="nav-link" onclick="goto('avis')">Avis</div>
       <div id="navAuth"></div>
     </div>
   </div>
@@ -224,6 +242,14 @@ select.form-input { cursor:pointer; }
         <div class="feature-icon"><i class="ti ti-headset"></i></div>
         <div class="feature-title">Support réactif</div>
         <div class="feature-desc">Notre équipe vous accompagne sur Telegram et répond en quelques minutes.</div>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top:0;">
+      <div class="section-title">Ils nous font confiance</div>
+      <div class="section-subtitle">Ce que disent nos clients</div>
+      <div class="avis-carousel" id="avisCarousel">
+        <div class="avis-track" id="avisTrack"></div>
       </div>
     </div>
   </div>
@@ -412,6 +438,42 @@ select.form-input { cursor:pointer; }
   </div>
 </div>
 
+<!-- ===== AVIS ===== -->
+<div class="page" id="page-avis">
+  <div class="container-narrow">
+    <div class="section-title">Avis clients</div>
+    <div class="section-subtitle">Les retours de notre communauté</div>
+
+    <div id="avisLaisser" class="unlock-card" style="margin-bottom:24px;">
+      <div class="card-title" style="font-size:15px; font-weight:600; margin-bottom:14px;">Laisser un avis</div>
+      <div id="avisLoginRequired" style="display:none; text-align:center; padding:10px 0;">
+        <div style="font-size:13px; color:var(--text-secondary); margin-bottom:14px;">Connectez-vous pour laisser un avis</div>
+        <button class="btn-lg btn-primary" onclick="goto('auth')"><i class="ti ti-login"></i>Se connecter</button>
+      </div>
+      <div id="avisForm" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Votre note</label>
+          <div class="star-input" id="starInput">
+            <i class="ti ti-star" data-star="1" onclick="setStar(1)"></i>
+            <i class="ti ti-star" data-star="2" onclick="setStar(2)"></i>
+            <i class="ti ti-star" data-star="3" onclick="setStar(3)"></i>
+            <i class="ti ti-star" data-star="4" onclick="setStar(4)"></i>
+            <i class="ti ti-star" data-star="5" onclick="setStar(5)"></i>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Votre message</label>
+          <textarea class="form-input" id="avisMessage" placeholder="Partagez votre expérience..." style="min-height:90px; resize:vertical; font-family:inherit;"></textarea>
+        </div>
+        <button class="btn-full" id="avisSubmitBtn" onclick="envoyerAvis()" style="width:auto; padding:11px 22px;">Publier mon avis</button>
+        <div class="auth-hint" style="margin-top:10px;">Votre avis sera publié après validation</div>
+      </div>
+    </div>
+
+    <div id="avisListe"></div>
+  </div>
+</div>
+
 <!-- ===== FOOTER ===== -->
 <div class="footer">
   <div class="footer-text">© 2026 Nanar iCloud · Support : <a href="https://t.me/nanarofficloud" class="footer-link" target="_blank">@nanarofficloud</a></div>
@@ -437,6 +499,7 @@ function goto(page) {
   closeNav();
   window.scrollTo(0,0);
   if (page==='debloquer') renderDeblocage();
+  if (page==='avis') renderAvis();
 }
 function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
 function closeNav() { document.getElementById('navLinks').classList.remove('open'); }
@@ -585,6 +648,108 @@ function telecharger() {
   window.location.href = DOWNLOAD_URL;
 }
 function toggleFaq(el) { el.classList.toggle('open'); }
+
+// ===== AVIS =====
+let selectedStar = 0;
+
+function starsHtml(n) {
+  let h = '';
+  for (let i=1; i<=5; i++) h += `<i class="ti ti-star-filled" style="${i<=n?'':'color:#E5E7EB;'}"></i>`;
+  return h;
+}
+
+function setStar(n) {
+  selectedStar = n;
+  document.querySelectorAll('#starInput i').forEach(s => {
+    const v = parseInt(s.dataset.star);
+    s.className = v <= n ? 'ti ti-star-filled active' : 'ti ti-star';
+  });
+}
+
+async function renderAvis() {
+  // Formulaire selon connexion
+  if (currentUser) {
+    document.getElementById('avisForm').style.display = 'block';
+    document.getElementById('avisLoginRequired').style.display = 'none';
+  } else {
+    document.getElementById('avisForm').style.display = 'none';
+    document.getElementById('avisLoginRequired').style.display = 'block';
+  }
+  // Charger les avis acceptés
+  try {
+    const r = await fetch('/api/avis');
+    const d = await r.json();
+    const liste = document.getElementById('avisListe');
+    if (d.success && d.data.length > 0) {
+      liste.innerHTML = d.data.map(a => `
+        <div class="avis-card" style="width:auto; margin-bottom:12px;">
+          <div class="avis-stars">${starsHtml(a.note)}</div>
+          <div class="avis-msg">${escapeHtml(a.message)}</div>
+          <div class="avis-author">
+            <div class="avis-avatar">${(a.prenom_client?.[0]||'?').toUpperCase()}</div>
+            <div>
+              <div class="avis-name">${escapeHtml(a.prenom_client||'Client')}</div>
+              <div class="avis-date">${formatDate(a.created_at)}</div>
+            </div>
+          </div>
+        </div>`).join('');
+    } else {
+      liste.innerHTML = '<div class="avis-empty">Aucun avis pour le moment. Soyez le premier !</div>';
+    }
+  } catch(e){}
+}
+
+async function envoyerAvis() {
+  const message = document.getElementById('avisMessage').value.trim();
+  const btn = document.getElementById('avisSubmitBtn');
+  if (selectedStar === 0) return showToast('Sélectionnez une note', 'error');
+  if (message.length < 3) return showToast('Message trop court', 'error');
+
+  btn.disabled = true; btn.textContent = 'Envoi...';
+  try {
+    const r = await fetch('/api/avis', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({note:selectedStar, message}) });
+    const d = await r.json();
+    if (d.success) {
+      showToast('Avis envoyé ! Il sera publié après validation.', 'success');
+      document.getElementById('avisMessage').value = '';
+      setStar(0); selectedStar = 0;
+    } else {
+      showToast(d.error||'Erreur', 'error');
+    }
+  } catch(e){ showToast('Erreur', 'error'); }
+  finally { btn.disabled = false; btn.textContent = 'Publier mon avis'; }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ===== CARROUSEL ACCUEIL (avis factices) =====
+const AVIS_FACTICES = [
+  { nom: 'Lucas', note: 5, message: 'Service rapide et efficace, mon iPhone a été débloqué en quelques minutes. Je recommande !' },
+  { nom: 'Sarah', note: 5, message: 'Super sérieux, support très réactif sur Telegram. Tout a marché parfaitement.' },
+  { nom: 'Mehdi', note: 5, message: 'Au top ! J\'avais des doutes au début mais finalement tout est nickel. Merci !' }
+];
+
+function renderCarousel() {
+  const track = document.getElementById('avisTrack');
+  if (!track) return;
+  // Doubler les avis pour un défilement infini fluide
+  const all = [...AVIS_FACTICES, ...AVIS_FACTICES];
+  track.innerHTML = all.map(a => `
+    <div class="avis-card">
+      <div class="avis-stars">${starsHtml(a.note)}</div>
+      <div class="avis-msg">${escapeHtml(a.message)}</div>
+      <div class="avis-author">
+        <div class="avis-avatar">${a.nom[0]}</div>
+        <div>
+          <div class="avis-name">${a.nom}</div>
+          <div class="avis-date">Client vérifié</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
 function showToast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg; t.className = 'toast show '+type;
@@ -599,6 +764,7 @@ function showToast(msg, type='') {
     if (d.authenticated) currentUser = d.user;
   } catch(e){}
   updateNavAuth();
+  renderCarousel();
 })();
 </script>
 </body>
