@@ -3,768 +3,921 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nanar iCloud — Déblocage iCloud iPhone</title>
+<title>Nova iCloud — Déblocage iCloud iPhone</title>
 <link rel="icon" type="image/png" href="/logo-nanar.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
-:root {
-  --primary:#7C3AED; --primary-dark:#6D28D9; --accent:#10B981; --accent-dark:#059669;
-  --error:#EF4444; --bg:#FAFAFA; --card:#FFFFFF; --text:#111827; --text-secondary:#6B7280;
-  --text-tertiary:#9CA3AF; --border:#E5E7EB; --border-light:#F3F4F6; --info-bg:#F3F4F6;
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+:root{
+  --primary:#6d28d9;--primary-light:#7c3aed;--primary-glow:rgba(109,40,217,0.3);
+  --accent:#10b981;--error:#ef4444;
+  --bg:#0a0a0f;--card:rgba(255,255,255,0.03);--card-border:rgba(255,255,255,0.07);
+  --text:#ffffff;--text-secondary:rgba(255,255,255,0.55);--text-tertiary:rgba(255,255,255,0.3);
 }
-body { background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; }
-a { text-decoration:none; color:inherit; }
+body{background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:rgba(109,40,217,0.3);border-radius:2px;}
 
-/* ===== NAVBAR ===== */
-.navbar { position:sticky; top:0; background:rgba(255,255,255,0.85); backdrop-filter:blur(12px); border-bottom:0.5px solid var(--border); z-index:100; }
-.nav-container { max-width:1100px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
-.nav-brand { display:flex; align-items:center; gap:10px; cursor:pointer; }
-.nav-logo { width:34px; height:34px; background:var(--primary); border-radius:9px; display:flex; align-items:center; justify-content:center; color:white; font-weight:600; font-size:15px; }
-.nav-brand-text { font-size:15px; font-weight:600; }
-.nav-links { display:flex; align-items:center; gap:4px; }
-.nav-link { padding:8px 14px; font-size:13px; color:var(--text-secondary); cursor:pointer; border-radius:8px; transition:0.15s; font-weight:500; }
-.nav-link:hover { background:var(--bg); color:var(--text); }
-.nav-link.active { color:var(--primary); }
-.nav-cta { padding:8px 16px; background:var(--primary); color:white; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; transition:0.2s; border:none; }
-.nav-cta:hover { background:var(--primary-dark); transform:translateY(-1px); }
-.nav-user { display:flex; align-items:center; gap:10px; }
-.nav-avatar { width:32px; height:32px; border-radius:50%; background:var(--info-bg); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:var(--primary); }
-.burger { display:none; background:none; border:none; font-size:24px; cursor:pointer; color:var(--text); }
+.promo-banner{display:none;width:100%;padding:10px 20px;background:linear-gradient(135deg,#6d28d9,#4c1d95);text-align:center;font-size:13px;font-weight:500;color:white;}
+.promo-banner.show{display:block;}
 
-/* ===== PAGES ===== */
-.page { display:none; animation:fadeIn 0.4s ease-out; }
-.page.active { display:block; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-.container { max-width:1100px; margin:0 auto; padding:48px 24px; }
-.container-narrow { max-width:680px; margin:0 auto; padding:48px 24px; }
+.navbar{position:sticky;top:0;background:rgba(10,10,20,0.85);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--card-border);z-index:100;}
+.nav-container{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-logo{width:34px;height:34px;background:linear-gradient(135deg,#6d28d9,#4c1d95);border-radius:9px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:15px;overflow:hidden;}
+.nav-logo img{width:100%;height:100%;object-fit:cover;border-radius:9px;}
+.nav-brand-text{font-size:15px;font-weight:600;}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-link{padding:7px 12px;font-size:12px;color:var(--text-secondary);cursor:pointer;border-radius:7px;transition:0.15s;font-weight:500;}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.lang-switch{display:flex;background:var(--card);border:0.5px solid var(--card-border);border-radius:7px;overflow:hidden;}
+.lang-btn{padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;transition:0.15s;color:var(--text-secondary);}
+.lang-btn.active{background:rgba(109,40,217,0.6);color:white;}
+.nav-icon-btn{width:32px;height:32px;border-radius:8px;background:var(--card);border:0.5px solid var(--card-border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:0.15s;font-size:16px;}
+.nav-icon-btn:hover{color:var(--text);border-color:var(--primary);}
+.btn-nav{padding:8px 16px;background:rgba(109,40,217,0.9);border:0.5px solid rgba(139,92,246,0.4);border-radius:8px;font-size:12px;color:white;font-weight:500;cursor:pointer;transition:0.2s;}
+.btn-nav:hover{background:var(--primary-light);}
+.burger{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;}
 
-/* ===== HERO ===== */
-.hero { text-align:center; padding:80px 24px 60px; }
-.hero-badge { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; background:var(--info-bg); border-radius:100px; font-size:12px; color:var(--text-secondary); margin-bottom:24px; font-weight:500; }
-.hero-badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
-.hero h1 { font-size:46px; font-weight:700; line-height:1.1; margin-bottom:20px; letter-spacing:-1px; }
-.hero h1 .gradient { background:linear-gradient(135deg,#7C3AED,#A78BFA); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-.hero p { font-size:17px; color:var(--text-secondary); max-width:540px; margin:0 auto 32px; line-height:1.6; }
-.hero-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-.btn-lg { padding:13px 26px; border-radius:10px; font-size:14px; font-weight:500; cursor:pointer; transition:0.2s; display:inline-flex; align-items:center; gap:8px; border:none; }
-.btn-primary { background:var(--primary); color:white; }
-.btn-primary:hover { background:var(--primary-dark); transform:translateY(-2px); box-shadow:0 8px 20px rgba(124,58,237,0.25); }
-.btn-outline { background:white; color:var(--text); border:0.5px solid var(--border); }
-.btn-outline:hover { border-color:var(--primary); color:var(--primary); }
+.mobile-menu{display:none;position:fixed;inset:0;background:rgba(10,10,20,0.98);z-index:200;flex-direction:column;padding:24px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;}
+.mobile-nav-link{padding:16px 0;font-size:16px;color:var(--text-secondary);border-bottom:0.5px solid var(--card-border);cursor:pointer;}
 
-/* ===== FEATURES ===== */
-.features { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:60px; }
-.feature-card { background:white; border:0.5px solid var(--border); border-radius:16px; padding:28px; transition:0.2s; }
-.feature-card:hover { transform:translateY(-3px); border-color:var(--primary); }
-.feature-icon { width:46px; height:46px; border-radius:12px; background:#EDE9FE; color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:16px; }
-.feature-title { font-size:16px; font-weight:600; margin-bottom:8px; }
-.feature-desc { font-size:13px; color:var(--text-secondary); line-height:1.6; }
+.page{display:none;animation:fadeIn 0.4s ease-out;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.container{max-width:1100px;margin:0 auto;padding:56px 24px;}
+.container-narrow{max-width:680px;margin:0 auto;padding:56px 24px;}
+.section-title{font-size:28px;font-weight:700;text-align:center;margin-bottom:8px;letter-spacing:-0.5px;}
+.section-sub{font-size:14px;color:var(--text-secondary);text-align:center;margin-bottom:40px;line-height:1.6;}
 
-/* ===== SECTION TITLE ===== */
-.section-title { font-size:30px; font-weight:700; text-align:center; margin-bottom:8px; letter-spacing:-0.5px; }
-.section-subtitle { font-size:15px; color:var(--text-secondary); text-align:center; margin-bottom:40px; }
+.hero{text-align:center;padding:80px 24px 60px;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:rgba(109,40,217,0.12);border:0.5px solid rgba(139,92,246,0.25);border-radius:100px;font-size:11px;color:#a78bfa;margin-bottom:24px;font-weight:500;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.hero h1{font-size:46px;font-weight:700;line-height:1.1;margin-bottom:18px;letter-spacing:-1.5px;}
+.grad{background:linear-gradient(135deg,#8b5cf6,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{font-size:16px;color:var(--text-secondary);max-width:480px;margin:0 auto 36px;line-height:1.6;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{padding:13px 26px;border-radius:10px;font-size:14px;font-weight:500;background:linear-gradient(135deg,#6d28d9,#7c3aed);color:white;border:0.5px solid rgba(139,92,246,0.4);cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--primary-glow);}
+.btn-outline{padding:13px 26px;border-radius:10px;font-size:14px;font-weight:500;background:var(--card);border:0.5px solid var(--card-border);color:var(--text-secondary);cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-outline:hover{border-color:var(--primary);color:var(--text);}
 
-/* ===== AUTH ===== */
-.auth-wrap { max-width:400px; margin:60px auto; }
-.auth-card { background:white; border:0.5px solid var(--border); border-radius:16px; padding:32px; }
-.auth-tabs { display:flex; gap:4px; background:var(--bg); padding:4px; border-radius:10px; margin-bottom:24px; }
-.auth-tab { flex:1; padding:9px; text-align:center; font-size:13px; color:var(--text-secondary); cursor:pointer; border-radius:7px; transition:0.2s; font-weight:500; }
-.auth-tab.active { background:white; color:var(--text); box-shadow:0 1px 2px rgba(0,0,0,0.05); }
-.form-group { margin-bottom:16px; }
-.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.form-label { display:block; font-size:11px; color:var(--text-secondary); margin-bottom:6px; font-weight:500; letter-spacing:0.3px; }
-.form-input { width:100%; padding:11px 13px; border:0.5px solid var(--border); border-radius:9px; font-size:13px; transition:0.2s; background:white; }
-.form-input:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(124,58,237,0.1); }
-select.form-input { cursor:pointer; }
-.password-wrapper { position:relative; }
-.password-wrapper .form-input { padding-right:40px; }
-.toggle-password { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--text-tertiary); font-size:18px; display:flex; }
-.toggle-password:hover { color:var(--primary); }
-.btn-full { width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:9px; font-size:13px; font-weight:500; cursor:pointer; transition:0.2s; }
-.btn-full:hover:not(:disabled) { background:var(--primary-dark); }
-.btn-full:disabled { opacity:0.5; cursor:not-allowed; }
-.auth-error { background:#FEE2E2; color:#991B1B; padding:10px 12px; border-radius:8px; font-size:12px; margin-bottom:16px; display:none; text-align:center; }
-.auth-error.show { display:block; }
-.auth-hint { text-align:center; font-size:12px; color:var(--text-tertiary); margin-top:14px; }
-.auth-form-anim { animation:formFade 0.5s cubic-bezier(0.16,1,0.3,1); }
-@keyframes formFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.stats{display:flex;justify-content:center;max-width:560px;margin:48px auto 0;background:rgba(109,40,217,0.06);border:0.5px solid rgba(139,92,246,0.12);border-radius:16px;overflow:hidden;}
+.stat{flex:1;padding:22px;text-align:center;border-right:0.5px solid rgba(255,255,255,0.06);}
+.stat:last-child{border-right:none;}
+.stat-val{font-size:26px;font-weight:700;margin-bottom:4px;}
+.stat-lbl{font-size:11px;color:var(--text-tertiary);}
 
-/* ===== PACKS ===== */
-.packs { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:40px; }
-.pack { background:white; border:0.5px solid var(--border); border-radius:16px; padding:28px 20px; text-align:center; cursor:pointer; transition:0.2s; position:relative; }
-.pack:hover { border-color:var(--primary); }
-.pack.selected { border:2px solid var(--primary); background:#FBFAFF; }
-.pack-badge { position:absolute; top:-11px; left:50%; transform:translateX(-50%); background:var(--primary); color:white; font-size:9px; padding:3px 12px; border-radius:10px; letter-spacing:0.5px; font-weight:600; white-space:nowrap; }
-.pack-name { font-size:12px; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:12px; font-weight:500; }
-.pack-price { font-size:38px; font-weight:700; }
-.pack.selected .pack-price { color:var(--primary); }
-.pack-unit { font-size:11px; color:var(--text-tertiary); margin-top:4px; }
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:60px;}
+.feat{background:var(--card);border:0.5px solid var(--card-border);border-radius:16px;padding:24px;transition:0.2s;}
+.feat:hover{border-color:rgba(139,92,246,0.3);transform:translateY(-3px);}
+.feat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px;}
+.fi-purple{background:rgba(109,40,217,0.2);border:0.5px solid rgba(139,92,246,0.2);color:#a78bfa;}
+.fi-green{background:rgba(16,185,129,0.12);border:0.5px solid rgba(16,185,129,0.18);color:#34d399;}
+.fi-yellow{background:rgba(251,191,36,0.1);border:0.5px solid rgba(251,191,36,0.15);color:#fbbf24;}
+.feat-title{font-size:14px;font-weight:600;margin-bottom:6px;}
+.feat-desc{font-size:12px;color:var(--text-tertiary);line-height:1.6;}
 
-/* ===== DEBLOCAGE FORM ===== */
-.unlock-card { background:white; border:0.5px solid var(--border); border-radius:16px; padding:28px; margin-bottom:20px; }
-.imei-block { background:var(--info-bg); border:0.5px solid var(--border); border-radius:12px; padding:18px; margin-bottom:12px; }
-.imei-block-title { font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
-.imei-block-num { width:22px; height:22px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-size:11px; }
-.total-bar { display:flex; justify-content:space-between; align-items:center; padding:18px; background:var(--info-bg); border-radius:12px; margin-bottom:20px; }
-.total-label { font-size:14px; color:var(--text-secondary); }
-.total-value { font-size:26px; font-weight:700; }
+.auth-wrap{max-width:480px;margin:60px auto;}
+.auth-card{background:rgba(255,255,255,0.02);border:0.5px solid var(--card-border);border-radius:18px;padding:32px;backdrop-filter:blur(20px);}
+.auth-tabs{display:flex;gap:4px;background:rgba(255,255,255,0.04);padding:4px;border-radius:10px;margin-bottom:24px;}
+.auth-tab{flex:1;padding:9px;text-align:center;font-size:13px;color:var(--text-secondary);cursor:pointer;border-radius:7px;transition:0.2s;font-weight:500;}
+.auth-tab.active{background:rgba(109,40,217,0.6);color:white;}
+.form-group{margin-bottom:14px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-label{display:block;font-size:11px;color:var(--text-secondary);margin-bottom:6px;font-weight:500;letter-spacing:0.3px;}
+.form-input{width:100%;padding:11px 13px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:9px;font-size:13px;color:var(--text);transition:0.2s;}
+.form-input:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(109,40,217,0.15);}
+.form-input::placeholder{color:var(--text-tertiary);}
+select.form-input option{background:#1a1a2e;color:white;}
+.pwd-wrap{position:relative;}
+.pwd-wrap .form-input{padding-right:40px;}
+.pwd-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-tertiary);cursor:pointer;font-size:17px;display:flex;}
+.btn-full{width:100%;padding:12px;background:linear-gradient(135deg,#6d28d9,#7c3aed);color:white;border:none;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;transition:0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-full:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px var(--primary-glow);}
+.btn-full:disabled{opacity:0.5;cursor:not-allowed;}
+.auth-error{background:rgba(239,68,68,0.1);border:0.5px solid rgba(239,68,68,0.2);color:#f87171;padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:14px;display:none;text-align:center;}
+.auth-error.show{display:block;}
+.auth-hint{text-align:center;font-size:12px;color:var(--text-tertiary);margin-top:14px;}
+.auth-link{color:#a78bfa;cursor:pointer;font-weight:500;}
 
-/* ===== PAYMENT METHODS ===== */
-.pay-methods { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0; }
-.pay-method { background:white; border:0.5px solid var(--border); border-radius:12px; padding:18px 12px; text-align:center; transition:0.2s; }
-.pay-method:hover { border-color:var(--primary); }
-.pay-method-icon { font-size:26px; margin-bottom:8px; color:var(--primary); }
-.pay-method-name { font-size:12px; font-weight:500; }
+.imei-block{background:rgba(255,255,255,0.02);border:0.5px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;margin-bottom:14px;}
+.price-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(109,40,217,0.1);border:0.5px solid rgba(139,92,246,0.2);border-radius:10px;margin-bottom:16px;}
+.price-big{font-size:28px;font-weight:700;}
+.price-lbl{font-size:13px;color:var(--text-secondary);}
 
-/* ===== TELEGRAM BTN ===== */
-.btn-telegram { width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:12px; font-size:14px; font-weight:500; cursor:pointer; transition:0.2s; display:flex; align-items:center; justify-content:center; gap:10px; }
-.btn-telegram:hover { background:var(--primary-dark); transform:translateY(-1px); }
+.licence-hero{background:var(--card);border:0.5px solid var(--card-border);border-radius:16px;overflow:hidden;margin-bottom:16px;}
+.licence-top{background:linear-gradient(135deg,#6d28d9,#4c1d95);padding:28px;position:relative;overflow:hidden;}
+.licence-top::after{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:rgba(255,255,255,0.05);border-radius:50%;}
+.licence-crown{width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:14px;position:relative;z-index:2;}
+.licence-name{font-size:22px;font-weight:700;margin-bottom:6px;position:relative;z-index:2;}
+.licence-price-row{display:flex;align-items:baseline;gap:10px;position:relative;z-index:2;}
+.licence-big{font-size:38px;font-weight:700;}
+.licence-sub-txt{font-size:13px;opacity:0.8;}
+.licence-body{padding:22px;}
+.licence-feat{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.lf-check{width:22px;height:22px;background:rgba(16,185,129,0.12);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#34d399;font-size:13px;}
+.lf-text{font-size:13px;color:var(--text-secondary);}
+.info-box{background:rgba(251,191,36,0.08);border:0.5px solid rgba(251,191,36,0.2);border-radius:10px;padding:14px;margin-bottom:16px;font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;}
 
-/* ===== LICENCE ===== */
-.licence-hero { background:white; border:0.5px solid var(--border); border-radius:18px; overflow:hidden; margin-bottom:24px; }
-.licence-top { background:linear-gradient(135deg,#7C3AED,#6D28D9); padding:36px 32px; color:white; position:relative; overflow:hidden; }
-.licence-top::after { content:''; position:absolute; top:-50px; right:-50px; width:180px; height:180px; background:rgba(255,255,255,0.08); border-radius:50%; }
-.licence-icon { width:52px; height:52px; background:rgba(255,255,255,0.18); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:16px; position:relative; z-index:2; }
-.licence-name { font-size:26px; font-weight:600; margin-bottom:6px; position:relative; z-index:2; }
-.licence-price { display:flex; align-items:baseline; gap:10px; position:relative; z-index:2; }
-.licence-price-big { font-size:42px; font-weight:700; }
-.licence-price-sub { font-size:14px; opacity:0.85; }
-.licence-body { padding:28px 32px; }
-.licence-feat { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
-.licence-feat-check { width:24px; height:24px; background:#D1FAE5; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--accent); }
-.licence-feat-text { font-size:14px; }
+.or-sep{text-align:center;font-size:11px;color:var(--text-tertiary);margin:12px 0;position:relative;}
+.or-sep::before,.or-sep::after{content:'';position:absolute;top:50%;width:calc(50% - 20px);height:0.5px;background:rgba(255,255,255,0.08);}
+.or-sep::before{left:0;}.or-sep::after{right:0;}
+.pay-methods{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0;}
+.pay-method{background:rgba(255,255,255,0.02);border:0.5px solid var(--card-border);border-radius:10px;padding:12px 8px;text-align:center;}
+.pay-icon{font-size:20px;color:#a78bfa;margin-bottom:5px;}
+.pay-name{font-size:10px;color:var(--text-secondary);font-weight:500;}
+.btn-outline-full{width:100%;padding:12px;background:rgba(255,255,255,0.04);color:var(--text-secondary);border:0.5px solid rgba(255,255,255,0.08);border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;transition:0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
+.btn-outline-full:hover{border-color:rgba(139,92,246,0.3);color:var(--text);}
 
-/* ===== FAQ ===== */
-.faq-item { background:white; border:0.5px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:10px; cursor:pointer; transition:0.2s; }
-.faq-item:hover { border-color:var(--primary); }
-.faq-q { display:flex; justify-content:space-between; align-items:center; }
-.faq-q-text { font-size:14px; font-weight:500; }
-.faq-chevron { color:var(--text-secondary); transition:0.3s; }
-.faq-item.open .faq-chevron { transform:rotate(180deg); }
-.faq-a { display:none; font-size:13px; color:var(--text-secondary); line-height:1.7; margin-top:14px; }
-.faq-item.open .faq-a { display:block; animation:fadeIn 0.3s; }
+.avis-carousel{overflow:hidden;margin-top:30px;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);}
+.avis-track{display:flex;gap:14px;animation:scrollLeft 35s linear infinite;width:max-content;}
+.avis-track:hover{animation-play-state:paused;}
+@keyframes scrollLeft{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.avis-card{background:rgba(255,255,255,0.02);border:0.5px solid var(--card-border);border-radius:14px;padding:20px;width:280px;flex-shrink:0;}
+.avis-stars{display:flex;gap:2px;color:#fbbf24;margin-bottom:10px;font-size:14px;}
+.avis-msg{font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;}
+.avis-author{display:flex;align-items:center;gap:10px;}
+.avis-avatar{width:30px;height:30px;border-radius:50%;background:rgba(109,40,217,0.2);border:0.5px solid rgba(139,92,246,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#a78bfa;}
+.avis-name{font-size:12px;font-weight:600;}
+.avis-date{font-size:10px;color:var(--text-tertiary);}
+.star-input{display:flex;gap:6px;font-size:26px;}
+.star-input i{cursor:pointer;color:rgba(255,255,255,0.15);transition:0.15s;}
+.star-input i.active{color:#fbbf24;}
 
-/* ===== LOGIN REQUIRED ===== */
-.login-required { text-align:center; padding:60px 24px; }
-.login-required-icon { width:72px; height:72px; background:var(--info-bg); border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:34px; color:var(--primary); margin:0 auto 24px; }
+.faq-cats{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.faq-cat{padding:7px 14px;border-radius:8px;font-size:12px;border:0.5px solid var(--card-border);background:var(--card);cursor:pointer;transition:0.15s;color:var(--text-secondary);font-weight:500;}
+.faq-cat.active{background:rgba(109,40,217,0.2);border-color:rgba(139,92,246,0.3);color:#a78bfa;}
+.faq-item{background:var(--card);border:0.5px solid var(--card-border);border-radius:12px;padding:16px 18px;margin-bottom:10px;cursor:pointer;transition:0.2s;}
+.faq-item:hover{border-color:rgba(139,92,246,0.3);}
+.faq-q{display:flex;justify-content:space-between;align-items:center;}
+.faq-q-text{font-size:13px;font-weight:500;}
+.faq-chevron{color:var(--text-secondary);transition:0.3s;font-size:18px;}
+.faq-item.open .faq-chevron{transform:rotate(180deg);}
+.faq-a{display:none;font-size:12px;color:var(--text-secondary);margin-top:12px;line-height:1.7;}
+.faq-item.open .faq-a{display:block;animation:fadeIn 0.3s;}
 
-/* ===== FOOTER ===== */
-.footer { border-top:0.5px solid var(--border); padding:32px 24px; text-align:center; margin-top:40px; }
-.footer-text { font-size:12px; color:var(--text-tertiary); }
-.footer-link { color:var(--primary); cursor:pointer; }
+.success-box{text-align:center;padding:80px 24px;}
+.success-icon{width:80px;height:80px;background:rgba(16,185,129,0.12);border:0.5px solid rgba(52,211,153,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;color:#34d399;margin:0 auto 24px;}
+.lr-box{text-align:center;padding:60px 24px;}
+.lr-icon{width:70px;height:70px;background:rgba(109,40,217,0.1);border:0.5px solid rgba(139,92,246,0.15);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:32px;color:#8b5cf6;margin:0 auto 22px;}
 
-/* ===== TOAST ===== */
-.toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(100px); padding:12px 20px; border-radius:10px; font-size:13px; font-weight:500; background:var(--text); color:white; transition:0.3s; z-index:9999; box-shadow:0 10px 25px rgba(0,0,0,0.15); }
-.toast.show { transform:translateX(-50%) translateY(0); }
-.toast.success { background:var(--accent); }
-.toast.error { background:var(--error); }
+/* CHAT CUSTOM */
+.chat-bubble{position:fixed;bottom:24px;right:24px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#4c1d95);border:0.5px solid rgba(139,92,246,0.4);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 24px var(--primary-glow);z-index:500;font-size:22px;color:white;transition:0.2s;}
+.chat-bubble:hover{transform:scale(1.1);}
+.chat-box{position:fixed;bottom:90px;right:24px;width:340px;background:#111118;border:0.5px solid var(--card-border);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,0.5);z-index:500;display:none;flex-direction:column;overflow:hidden;max-height:480px;}
+.chat-box.open{display:flex;}
+.chat-header{padding:16px 18px;background:linear-gradient(135deg,rgba(109,40,217,0.3),rgba(76,29,149,0.3));border-bottom:0.5px solid var(--card-border);display:flex;justify-content:space-between;align-items:center;}
+.chat-title{font-size:14px;font-weight:600;}
+.chat-sub{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+.chat-close{background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:18px;}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;}
+.cmsg{max-width:82%;padding:10px 13px;border-radius:12px;font-size:12px;line-height:1.6;}
+.cmsg.bot{background:rgba(255,255,255,0.04);border:0.5px solid var(--card-border);color:var(--text-secondary);align-self:flex-start;border-bottom-left-radius:4px;}
+.cmsg.user{background:rgba(109,40,217,0.3);border:0.5px solid rgba(139,92,246,0.2);color:white;align-self:flex-end;border-bottom-right-radius:4px;}
+.chat-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px;}
+.chat-sug{padding:6px 12px;background:rgba(109,40,217,0.1);border:0.5px solid rgba(139,92,246,0.2);border-radius:20px;font-size:11px;color:#a78bfa;cursor:pointer;transition:0.15s;}
+.chat-sug:hover{background:rgba(109,40,217,0.2);}
+.chat-input-wrap{padding:12px;border-top:0.5px solid var(--card-border);display:flex;gap:8px;}
+.chat-input{flex:1;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:8px;padding:9px 12px;font-size:12px;color:white;outline:none;}
+.chat-input::placeholder{color:var(--text-tertiary);}
+.chat-send{background:var(--primary);border:none;border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:white;font-size:16px;flex-shrink:0;}
 
-/* ===== RESPONSIVE ===== */
-@media (max-width:768px) {
-  .burger { display:block; }
-  .nav-links { display:none; position:absolute; top:60px; left:0; right:0; background:white; flex-direction:column; padding:12px; border-bottom:0.5px solid var(--border); gap:2px; }
-  .nav-links.open { display:flex; }
-  .nav-link, .nav-cta { width:100%; text-align:left; }
-  .hero h1 { font-size:32px; }
-  .hero p { font-size:15px; }
-  .features { grid-template-columns:1fr; }
-  .packs { grid-template-columns:1fr; }
-  .pay-methods { grid-template-columns:1fr 1fr; }
-  .section-title { font-size:24px; }
-  .form-row { grid-template-columns:1fr; }
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;background:#1a1a2e;border:0.5px solid var(--card-border);color:white;transition:0.3s;z-index:9999;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{background:rgba(16,185,129,0.2);border-color:rgba(52,211,153,0.3);color:#34d399;}
+.toast.error{background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.3);color:#f87171;}
+
+.footer{border-top:0.5px solid var(--card-border);padding:28px 24px;text-align:center;margin-top:40px;}
+.footer-text{font-size:12px;color:var(--text-tertiary);}
+.footer-link{color:#8b5cf6;cursor:pointer;}
+
+@media(max-width:768px){
+  .burger{display:block;}.nav-links{display:none;}
+  .hero h1{font-size:30px;}.features{grid-template-columns:1fr;}
+  .pay-methods{grid-template-columns:1fr 1fr;}
+  .form-row{grid-template-columns:1fr;}.stats{flex-direction:column;}
+  .chat-box{width:calc(100vw - 48px);}
+  .auth-wrap{margin:30px auto;}
 }
-
-/* ===== AVIS ===== */
-.avis-carousel { overflow:hidden; margin-top:30px; position:relative; -webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent); mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent); }
-.avis-track { display:flex; gap:16px; animation:scroll 30s linear infinite; width:max-content; }
-.avis-track:hover { animation-play-state:paused; }
-@keyframes scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
-.avis-card { background:white; border:0.5px solid var(--border); border-radius:16px; padding:22px; width:300px; flex-shrink:0; }
-.avis-stars { display:flex; gap:2px; color:#FBBF24; margin-bottom:12px; font-size:16px; }
-.avis-msg { font-size:13px; color:var(--text); line-height:1.6; margin-bottom:14px; }
-.avis-author { display:flex; align-items:center; gap:10px; }
-.avis-avatar { width:34px; height:34px; border-radius:50%; background:#EDE9FE; color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; }
-.avis-name { font-size:13px; font-weight:600; }
-.avis-date { font-size:11px; color:var(--text-tertiary); }
-.star-input { display:flex; gap:6px; font-size:28px; color:var(--border); }
-.star-input i { cursor:pointer; transition:0.15s; }
-.star-input i.active { color:#FBBF24; }
-.avis-empty { text-align:center; padding:40px; color:var(--text-tertiary); font-size:13px; }
 </style>
 </head>
 <body>
 
-<!-- ===== NAVBAR ===== -->
+<div class="promo-banner" id="promoBanner"></div>
+
 <div class="navbar">
   <div class="nav-container">
     <div class="nav-brand" onclick="goto('accueil')">
-      <div class="nav-logo"><img src="/logo-nanar.png" alt="N" style="width:100%;height:100%;object-fit:contain;border-radius:9px;"></div>
-      <div class="nav-brand-text">Nanar iCloud</div>
+      <div class="nav-logo"><img src="/logo-nanar.png" alt="N" onerror="this.style.display='none';this.parentElement.textContent='N';"></div>
+      <span class="nav-brand-text">Nova iCloud</span>
     </div>
-    <button class="burger" onclick="toggleNav()"><i class="ti ti-menu-2"></i></button>
+    <button class="burger" onclick="toggleMobile()"><i class="ti ti-menu-2"></i></button>
     <div class="nav-links" id="navLinks">
-      <div class="nav-link" onclick="goto('accueil')">Accueil</div>
-      <div class="nav-link" onclick="goto('debloquer')">Débloquer</div>
-      <div class="nav-link" onclick="goto('licence')">Licence Pro</div>
-      <div class="nav-link" onclick="goto('faq')">FAQ</div>
-      <div class="nav-link" onclick="goto('avis')">Avis</div>
+      <div class="nav-link" id="nl-avis" onclick="goto('avis')">Avis</div>
+      <div class="nav-link" id="nl-faq" onclick="goto('faq')">FAQ</div>
+      <div style="margin:0 6px;width:0.5px;height:16px;background:var(--card-border);"></div>
+      <div class="lang-switch">
+        <div class="lang-btn active" onclick="setLang('fr')">FR</div>
+        <div class="lang-btn" onclick="setLang('en')">EN</div>
+      </div>
+      <div class="nav-icon-btn" onclick="openTelegram()" title="Support Telegram"><i class="ti ti-brand-telegram"></i></div>
       <div id="navAuth"></div>
     </div>
   </div>
 </div>
 
-<!-- ===== ACCUEIL ===== -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <div class="nav-brand"><div class="nav-logo">N</div><span class="nav-brand-text">Nova iCloud</span></div>
+    <button onclick="toggleMobile()" style="background:none;border:none;color:var(--text);font-size:24px;cursor:pointer;"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="mobile-nav-link" id="ml-avis" onclick="goto('avis');toggleMobile()">Avis</div>
+  <div class="mobile-nav-link" id="ml-faq" onclick="goto('faq');toggleMobile()">FAQ</div>
+  <div class="mobile-nav-link" onclick="openTelegram();toggleMobile()">Support Telegram</div>
+  <div style="margin-top:24px;" id="mobileAuth"></div>
+</div>
+
+<!-- ACCUEIL -->
 <div class="page active" id="page-accueil">
   <div class="hero">
-    <div class="hero-badge"><span class="hero-badge-dot"></span>Déblocage iCloud rapide & sécurisé</div>
-    <h1>Débloquez votre iPhone<br><span class="gradient">en quelques minutes</span></h1>
-    <p>Logiciel professionnel de déblocage iCloud. Branchez votre iPhone, et laissez Nanar iCloud faire le reste.</p>
-    <div class="hero-actions">
-      <button class="btn-lg btn-primary" onclick="telecharger()"><i class="ti ti-download"></i>Télécharger pour Windows</button>
-      <button class="btn-lg btn-outline" onclick="goto('debloquer')"><i class="ti ti-device-mobile"></i>Débloquer un iPhone</button>
+    <div class="hero-badge"><span class="hero-dot"></span><span id="h-badge">Service disponible 24h/24</span></div>
+    <h1 id="h-title">Débloquez votre iPhone<br><span class="grad">en quelques minutes</span></h1>
+    <p id="h-sub">Logiciel professionnel de déblocage iCloud. Rapide, sécurisé, fiable.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="telecharger()"><i class="ti ti-download"></i><span id="h-dl">Télécharger Windows</span></button>
+      <button class="btn-outline" onclick="gotoDebloquer()"><i class="ti ti-device-mobile"></i><span id="h-unlock">Débloquer un iPhone</span></button>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-val" id="counter">—</div><div class="stat-lbl" id="s-today">iPhones débloqués aujourd'hui</div></div>
+      <div class="stat"><div class="stat-val">98%</div><div class="stat-lbl" id="s-sat">Clients satisfaits</div></div>
+      <div class="stat"><div class="stat-val">24/7</div><div class="stat-lbl" id="s-sup">Support disponible</div></div>
     </div>
   </div>
-
-  <div class="container">
+  <div class="container" style="padding-top:0;">
     <div class="features">
-      <div class="feature-card">
-        <div class="feature-icon"><i class="ti ti-bolt"></i></div>
-        <div class="feature-title">Rapide</div>
-        <div class="feature-desc">Déblocage en quelques minutes. Branchez votre iPhone, le logiciel détecte tout automatiquement.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon"><i class="ti ti-shield-check"></i></div>
-        <div class="feature-title">Sécurisé</div>
-        <div class="feature-desc">Vos données sont protégées et chiffrées. Aucune information n'est partagée avec des tiers.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon"><i class="ti ti-headset"></i></div>
-        <div class="feature-title">Support réactif</div>
-        <div class="feature-desc">Notre équipe vous accompagne sur Telegram et répond en quelques minutes.</div>
-      </div>
+      <div class="feat"><div class="feat-icon fi-purple"><i class="ti ti-bolt"></i></div><div class="feat-title" id="f1-t">Rapide</div><div class="feat-desc" id="f1-d">Déblocage en quelques minutes. Le logiciel détecte tout automatiquement.</div></div>
+      <div class="feat"><div class="feat-icon fi-green"><i class="ti ti-shield-check"></i></div><div class="feat-title" id="f2-t">Sécurisé</div><div class="feat-desc" id="f2-d">Données protégées et chiffrées. Jamais partagées avec des tiers.</div></div>
+      <div class="feat"><div class="feat-icon fi-yellow"><i class="ti ti-headset"></i></div><div class="feat-title" id="f3-t">Support 24/7</div><div class="feat-desc" id="f3-d">Notre équipe répond en quelques minutes sur Telegram.</div></div>
     </div>
-
-    <div class="container" style="padding-top:0;">
-      <div class="section-title">Ils nous font confiance</div>
-      <div class="section-subtitle">Ce que disent nos clients</div>
-      <div class="avis-carousel" id="avisCarousel">
-        <div class="avis-track" id="avisTrack"></div>
-      </div>
+    <div style="margin-top:60px;">
+      <div class="section-title" id="av-title">Ils nous font confiance</div>
+      <div class="section-sub" id="av-sub">Ce que disent nos clients</div>
+      <div class="avis-carousel"><div class="avis-track" id="avisTrack"></div></div>
     </div>
   </div>
 </div>
 
-<!-- ===== AUTH ===== -->
+<!-- AUTH -->
 <div class="page" id="page-auth">
   <div class="auth-wrap">
     <div class="auth-card">
       <div class="auth-tabs">
-        <div class="auth-tab active" onclick="switchAuth('login')">Connexion</div>
-        <div class="auth-tab" onclick="switchAuth('register')">Inscription</div>
+        <div class="auth-tab active" id="tab-login" onclick="switchAuth('login')">Connexion</div>
+        <div class="auth-tab" id="tab-register" onclick="switchAuth('register')">Inscription</div>
       </div>
       <div class="auth-error" id="authError"></div>
-
-      <div id="loginForm" class="auth-form-anim">
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" id="loginEmail" placeholder="jean@email.com" onkeypress="if(event.key==='Enter') doLogin()">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Mot de passe</label>
-          <div class="password-wrapper">
-            <input type="password" class="form-input" id="loginPwd" placeholder="••••••••" onkeypress="if(event.key==='Enter') doLogin()">
-            <button class="toggle-password" onclick="togglePwd('loginPwd', this)"><i class="ti ti-eye"></i></button>
-          </div>
-        </div>
+      <div id="loginForm">
+        <div class="form-group"><label class="form-label">EMAIL</label><input type="email" class="form-input" id="loginEmail" placeholder="jean@email.com" onkeypress="if(event.key==='Enter')doLogin()"></div>
+        <div class="form-group"><label class="form-label" id="lbl-pwd">MOT DE PASSE</label><div class="pwd-wrap"><input type="password" class="form-input" id="loginPwd" placeholder="••••••••" onkeypress="if(event.key==='Enter')doLogin()"><button class="pwd-eye" onclick="togglePwd('loginPwd',this)"><i class="ti ti-eye"></i></button></div></div>
         <button class="btn-full" id="loginBtn" onclick="doLogin()">Se connecter</button>
-        <div class="auth-hint">Pas encore de compte ? <span class="footer-link" onclick="switchAuth('register')">Inscrivez-vous</span></div>
+        <div class="auth-hint" id="auth-hint-login">Pas encore de compte ? <span class="auth-link" onclick="switchAuth('register')">Inscrivez-vous</span></div>
       </div>
-
-      <div id="registerForm" style="display:none;" class="auth-form-anim">
+      <div id="registerForm" style="display:none;">
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Nom</label>
-            <input type="text" class="form-input" id="regNom" placeholder="Dupont">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Prénom</label>
-            <input type="text" class="form-input" id="regPrenom" placeholder="Jean">
-          </div>
+          <div class="form-group"><label class="form-label" id="lbl-nom">NOM</label><input type="text" class="form-input" id="regNom" placeholder="Dupont"></div>
+          <div class="form-group"><label class="form-label" id="lbl-prenom">PRÉNOM</label><input type="text" class="form-input" id="regPrenom" placeholder="Jean"></div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" id="regEmail" placeholder="jean@email.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Mot de passe</label>
-          <div class="password-wrapper">
-            <input type="password" class="form-input" id="regPwd" placeholder="Minimum 6 caractères">
-            <button class="toggle-password" onclick="togglePwd('regPwd', this)"><i class="ti ti-eye"></i></button>
-          </div>
-        </div>
+        <div class="form-group"><label class="form-label">EMAIL</label><input type="email" class="form-input" id="regEmail" placeholder="jean@email.com"></div>
+        <div class="form-group"><label class="form-label" id="lbl-pwd2">MOT DE PASSE</label><div class="pwd-wrap"><input type="password" class="form-input" id="regPwd" placeholder="Minimum 6 caractères"><button class="pwd-eye" onclick="togglePwd('regPwd',this)"><i class="ti ti-eye"></i></button></div></div>
         <button class="btn-full" id="registerBtn" onclick="doRegister()">Créer mon compte</button>
-        <div class="auth-hint">Déjà un compte ? <span class="footer-link" onclick="switchAuth('login')">Connectez-vous</span></div>
+        <div class="auth-hint" id="auth-hint-reg"><span class="auth-link" onclick="switchAuth('login')">Déjà un compte ? Connectez-vous</span></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== DEBLOQUER ===== -->
+<!-- DÉBLOCAGE + LICENCE -->
 <div class="page" id="page-debloquer">
-  <div class="container-narrow">
-    <div id="unlockLoginRequired" style="display:none;">
-      <div class="login-required">
-        <div class="login-required-icon"><i class="ti ti-lock"></i></div>
-        <div class="section-title">Connexion requise</div>
-        <div class="section-subtitle">Connectez-vous pour accéder au déblocage</div>
-        <button class="btn-lg btn-primary" onclick="goto('auth')"><i class="ti ti-login"></i>Se connecter</button>
+  <div class="auth-wrap" style="max-width:520px;">
+    <div id="dlLoginReq" style="display:none;">
+      <div class="lr-box">
+        <div class="lr-icon"><i class="ti ti-lock"></i></div>
+        <div class="section-title" id="lr-title">Connexion requise</div>
+        <div class="section-sub" id="lr-sub">Connectez-vous pour accéder au déblocage</div>
+        <button class="btn-primary" onclick="goto('auth')" style="margin:0 auto;"><i class="ti ti-login"></i><span id="lr-btn">Se connecter</span></button>
       </div>
     </div>
-
-    <div id="unlockContent" style="display:none;">
-      <div class="section-title">Débloquer un appareil</div>
-      <div class="section-subtitle">Choisissez votre pack et renseignez vos appareils</div>
-
-      <div class="packs">
-        <div class="pack" data-pack="1" data-price="50" onclick="selectPack(1)">
-          <div class="pack-name">1 IPHONE</div>
-          <div class="pack-price">50€</div>
+    <div id="dlContent" style="display:none;">
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <div class="auth-tab active" id="tab-debl" onclick="switchDl('deblocage')">Déblocage</div>
+          <div class="auth-tab" id="tab-lic" onclick="switchDl('licence')">Licence Pro</div>
         </div>
-        <div class="pack selected" data-pack="2" data-price="70" onclick="selectPack(2)">
-          <div class="pack-badge">POPULAIRE</div>
-          <div class="pack-name">2 IPHONE</div>
-          <div class="pack-price">70€</div>
-          <div class="pack-unit">35€ / unité</div>
-        </div>
-        <div class="pack" data-pack="3" data-price="120" onclick="selectPack(3)">
-          <div class="pack-name">3 IPHONE</div>
-          <div class="pack-price">120€</div>
-          <div class="pack-unit">40€ / unité</div>
-        </div>
-      </div>
 
-      <div class="unlock-card">
-        <div id="imeiBlocks"></div>
-      </div>
+        <!-- DÉBLOCAGE : 1 seul iPhone -->
+        <div id="dlDeblocage">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div>
+              <div style="font-size:15px;font-weight:600;" id="dl-title">Débloquer 1 iPhone</div>
+              <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;" id="dl-sub">Entrez les informations de votre appareil</div>
+            </div>
+            <div class="price-badge">
+              <span class="price-big">50€</span>
+              <span class="price-lbl" id="dl-price-lbl">/ appareil</span>
+            </div>
+          </div>
 
-      <div class="total-bar">
-        <div class="total-label">Total à payer</div>
-        <div class="total-value" id="totalValue">70€</div>
-      </div>
+          <div class="imei-block">
+            <div class="form-group">
+              <label class="form-label" id="lbl-model">MODÈLE</label>
+              <select class="form-input" id="model1">
+                <option value="" id="model-placeholder">Sélectionner un modèle...</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">IMEI (15 chiffres)</label>
+              <input type="text" class="form-input" id="imei1" placeholder="35XXXXXXXXXXXXX" maxlength="15" style="font-family:monospace;">
+            </div>
+          </div>
 
-      <div class="unlock-card">
-        <div class="card-title" style="font-size:15px; font-weight:600; margin-bottom:4px;">Moyens de paiement</div>
-        <div class="section-subtitle" style="text-align:left; margin-bottom:0; font-size:13px;">Contactez-nous sur Telegram pour régler avec l'un de ces moyens</div>
-        <div class="pay-methods">
-          <div class="pay-method"><div class="pay-method-icon"><i class="ti ti-currency-bitcoin"></i></div><div class="pay-method-name">Crypto</div></div>
-          <div class="pay-method"><div class="pay-method-icon"><i class="ti ti-credit-card"></i></div><div class="pay-method-name">PCS</div></div>
-          <div class="pay-method"><div class="pay-method-icon"><i class="ti ti-gift-card"></i></div><div class="pay-method-name">Paysafecard</div></div>
-          <div class="pay-method"><div class="pay-method-icon"><i class="ti ti-wallet"></i></div><div class="pay-method-name">Skrill</div></div>
+          <button class="btn-full" id="btnPayerStripe" onclick="payerStripe()"><i class="ti ti-credit-card"></i><span id="btn-payer">Payer par carte — 50€</span></button>
         </div>
-        <button class="btn-telegram" onclick="contactTelegram()"><i class="ti ti-brand-telegram"></i>Contacter sur Telegram pour payer</button>
+
+        <!-- LICENCE -->
+        <div id="dlLicence" style="display:none;">
+          <div class="licence-hero">
+            <div class="licence-top">
+              <div class="licence-crown"><i class="ti ti-crown"></i></div>
+              <div class="licence-name" id="lic-name">Licence Pro à vie</div>
+              <div class="licence-price-row"><span class="licence-big">350€</span><span class="licence-sub-txt" id="lic-sub">paiement unique · à vie</span></div>
+            </div>
+            <div class="licence-body">
+              <div class="licence-feat"><div class="lf-check"><i class="ti ti-check"></i></div><div class="lf-text" id="lic-f1"><strong>Déblocages illimités</strong> — plus besoin de payer 50€</div></div>
+              <div class="licence-feat"><div class="lf-check"><i class="ti ti-check"></i></div><div class="lf-text" id="lic-f2">Valable <strong>à vie</strong>, sans abonnement</div></div>
+              <div class="licence-feat"><div class="lf-check"><i class="ti ti-check"></i></div><div class="lf-text" id="lic-f3">Rentabilisé dès <strong>7 déblocages</strong></div></div>
+              <div class="licence-feat"><div class="lf-check"><i class="ti ti-check"></i></div><div class="lf-text" id="lic-f4">Idéal pour les <strong>revendeurs</strong></div></div>
+            </div>
+          </div>
+          <div class="info-box" id="lic-info">⏳ Après votre paiement, la licence sera activée manuellement dans les prochaines heures. Vous recevrez un email de confirmation.</div>
+          <button class="btn-full" id="btnPayerLicence" onclick="payerLicenceStripe()"><i class="ti ti-credit-card"></i><span id="btn-lic">Acheter par carte — 350€</span></button>
+          <div class="or-sep" id="lic-or">ou</div>
+          <div class="pay-methods">
+            <div class="pay-method"><div class="pay-icon"><i class="ti ti-currency-bitcoin"></i></div><div class="pay-name">Crypto</div></div>
+            <div class="pay-method"><div class="pay-icon"><i class="ti ti-credit-card"></i></div><div class="pay-name">PCS</div></div>
+            <div class="pay-method"><div class="pay-icon"><i class="ti ti-gift-card"></i></div><div class="pay-name">Paysafecard</div></div>
+            <div class="pay-method"><div class="pay-icon"><i class="ti ti-wallet"></i></div><div class="pay-name">Skrill</div></div>
+          </div>
+          <button class="btn-outline-full" onclick="contactTelegramLicence()"><i class="ti ti-brand-telegram"></i><span id="btn-tg-lic">Payer via Telegram</span></button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== LICENCE ===== -->
-<div class="page" id="page-licence">
-  <div class="container-narrow">
-    <div class="section-title">Licence Pro à vie</div>
-    <div class="section-subtitle">Déblocages illimités, pour les revendeurs et professionnels</div>
-
-    <div class="licence-hero">
-      <div class="licence-top">
-        <div class="licence-icon"><i class="ti ti-crown"></i></div>
-        <div class="licence-name">Licence Pro à vie</div>
-        <div class="licence-price">
-          <span class="licence-price-big">450€</span>
-          <span class="licence-price-sub">paiement unique · à vie</span>
-        </div>
-      </div>
-      <div class="licence-body">
-        <div class="licence-feat"><div class="licence-feat-check"><i class="ti ti-check"></i></div><div class="licence-feat-text"><strong>Déblocages illimités</strong> — plus besoin de payer 50€ à chaque fois</div></div>
-        <div class="licence-feat"><div class="licence-feat-check"><i class="ti ti-check"></i></div><div class="licence-feat-text">Valable <strong>à vie</strong>, sans abonnement</div></div>
-        <div class="licence-feat"><div class="licence-feat-check"><i class="ti ti-check"></i></div><div class="licence-feat-text">Rentabilisé dès <strong>9 déblocages</strong></div></div>
-        <div class="licence-feat"><div class="licence-feat-check"><i class="ti ti-check"></i></div><div class="licence-feat-text">Idéal pour les <strong>revendeurs</strong> et professionnels</div></div>
-      </div>
-    </div>
-
-    <div class="unlock-card">
-      <div class="card-title" style="font-size:15px; font-weight:600; margin-bottom:4px;">Moyens de paiement</div>
-      <div class="section-subtitle" style="text-align:left; margin-bottom:0; font-size:13px;">Contactez-nous sur Telegram pour régler avec l'un de ces moyens</div>
-      <div class="pay-methods">
-        <div class="pay-method"><div class="pay-method-icon"><i class="ti ti-currency-bitcoin"></i></div><div class="pay-method-name">Crypto</div></div>
-        <div class="pay-method"><div class="pay-method-icon"><i class="ti ti-credit-card"></i></div><div class="pay-method-name">PCS</div></div>
-        <div class="pay-method"><div class="pay-method-icon"><i class="ti ti-gift-card"></i></div><div class="pay-method-name">Paysafecard</div></div>
-        <div class="pay-method"><div class="pay-method-icon"><i class="ti ti-wallet"></i></div><div class="pay-method-name">Skrill</div></div>
-      </div>
-      <button class="btn-telegram" onclick="contactTelegramLicence()"><i class="ti ti-brand-telegram"></i>Contacter sur Telegram</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== FAQ ===== -->
-<div class="page" id="page-faq">
-  <div class="container-narrow">
-    <div class="section-title">Questions fréquentes</div>
-    <div class="section-subtitle">Tout ce que vous devez savoir</div>
-
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q"><div class="faq-q-text">Comment fonctionne le déblocage ?</div><i class="ti ti-chevron-down faq-chevron"></i></div>
-      <div class="faq-a">Téléchargez le logiciel, créez un compte, puis choisissez votre pack sur la page Débloquer. Envoyez-nous l'IMEI de votre iPhone via Telegram, réglez le paiement, et nous activons votre appareil. Vous pourrez ensuite le débloquer directement depuis le logiciel.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q"><div class="faq-q-text">Combien de temps ça prend ?</div><i class="ti ti-chevron-down faq-chevron"></i></div>
-      <div class="faq-a">Une fois le paiement reçu, l'activation se fait généralement en quelques minutes à quelques heures. Le déblocage en lui-même ne prend que quelques minutes.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q"><div class="faq-q-text">Quels iPhones sont compatibles ?</div><i class="ti ti-chevron-down faq-chevron"></i></div>
-      <div class="faq-a">Notre logiciel prend en charge une large gamme d'iPhones, de l'iPhone 7 aux modèles les plus récents. Contactez-nous sur Telegram si vous avez un doute sur votre modèle.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q"><div class="faq-q-text">Quels moyens de paiement acceptez-vous ?</div><i class="ti ti-chevron-down faq-chevron"></i></div>
-      <div class="faq-a">Nous acceptons les cryptomonnaies, PCS, Paysafecard et Skrill. Tous les paiements se font via notre support Telegram.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q"><div class="faq-q-text">À quoi sert la Licence Pro ?</div><i class="ti ti-chevron-down faq-chevron"></i></div>
-      <div class="faq-a">La Licence Pro à 450€ vous permet de débloquer un nombre illimité d'iPhones à vie. C'est idéal pour les revendeurs ou si vous avez plusieurs appareils à débloquer.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q"><div class="faq-q-text">Est-ce sécurisé ?</div><i class="ti ti-chevron-down faq-chevron"></i></div>
-      <div class="faq-a">Oui. Vos données personnelles sont chiffrées et ne sont jamais partagées. Le logiciel ne fait que communiquer avec votre iPhone via USB.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== AVIS ===== -->
+<!-- AVIS -->
 <div class="page" id="page-avis">
   <div class="container-narrow">
-    <div class="section-title">Avis clients</div>
-    <div class="section-subtitle">Les retours de notre communauté</div>
-
-    <div id="avisLaisser" class="unlock-card" style="margin-bottom:24px;">
-      <div class="card-title" style="font-size:15px; font-weight:600; margin-bottom:14px;">Laisser un avis</div>
-      <div id="avisLoginRequired" style="display:none; text-align:center; padding:10px 0;">
-        <div style="font-size:13px; color:var(--text-secondary); margin-bottom:14px;">Connectez-vous pour laisser un avis</div>
-        <button class="btn-lg btn-primary" onclick="goto('auth')"><i class="ti ti-login"></i>Se connecter</button>
+    <div class="section-title" id="avis-page-title">Avis clients</div>
+    <div class="section-sub" id="avis-page-sub">Les retours de notre communauté</div>
+    <div class="auth-card" style="margin-bottom:24px;">
+      <div style="font-size:14px;font-weight:600;margin-bottom:14px;" id="avis-leave">Laisser un avis</div>
+      <div id="avisLoginReq" style="display:none;text-align:center;padding:10px 0;">
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;" id="avis-lr">Connectez-vous pour laisser un avis</div>
+        <button class="btn-primary" onclick="goto('auth')" style="margin:0 auto;"><i class="ti ti-login"></i>Se connecter</button>
       </div>
-      <div id="avisForm" style="display:none;">
-        <div class="form-group">
-          <label class="form-label">Votre note</label>
-          <div class="star-input" id="starInput">
-            <i class="ti ti-star" data-star="1" onclick="setStar(1)"></i>
-            <i class="ti ti-star" data-star="2" onclick="setStar(2)"></i>
-            <i class="ti ti-star" data-star="3" onclick="setStar(3)"></i>
-            <i class="ti ti-star" data-star="4" onclick="setStar(4)"></i>
-            <i class="ti ti-star" data-star="5" onclick="setStar(5)"></i>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Votre message</label>
-          <textarea class="form-input" id="avisMessage" placeholder="Partagez votre expérience..." style="min-height:90px; resize:vertical; font-family:inherit;"></textarea>
-        </div>
-        <button class="btn-full" id="avisSubmitBtn" onclick="envoyerAvis()" style="width:auto; padding:11px 22px;">Publier mon avis</button>
-        <div class="auth-hint" style="margin-top:10px;">Votre avis sera publié après validation</div>
+      <div id="avisFormWrap" style="display:none;">
+        <div class="form-group"><label class="form-label" id="avis-note-lbl">VOTRE NOTE</label><div class="star-input" id="starInput"><i class="ti ti-star" data-star="1" onclick="setStar(1)"></i><i class="ti ti-star" data-star="2" onclick="setStar(2)"></i><i class="ti ti-star" data-star="3" onclick="setStar(3)"></i><i class="ti ti-star" data-star="4" onclick="setStar(4)"></i><i class="ti ti-star" data-star="5" onclick="setStar(5)"></i></div></div>
+        <div class="form-group"><label class="form-label" id="avis-msg-lbl">MESSAGE</label><textarea class="form-input" id="avisMsg" placeholder="Partagez votre expérience..." style="min-height:80px;resize:vertical;font-family:inherit;"></textarea></div>
+        <button class="btn-full" id="avisBtn" onclick="envoyerAvis()" style="width:auto;padding:10px 22px;">Publier mon avis</button>
+        <div class="auth-hint" style="margin-top:8px;" id="avis-mod">Votre avis sera publié après validation</div>
       </div>
     </div>
-
     <div id="avisListe"></div>
   </div>
 </div>
 
-<!-- ===== FOOTER ===== -->
+<!-- FAQ -->
+<div class="page" id="page-faq">
+  <div class="container-narrow">
+    <div class="section-title">FAQ</div>
+    <div class="section-sub" id="faq-sub">Toutes les réponses à vos questions</div>
+    <div class="faq-cats">
+      <div class="faq-cat active" onclick="filterFaq('all',this)" id="fc-all">Toutes</div>
+      <div class="faq-cat" onclick="filterFaq('deblocage',this)" id="fc-debl">Déblocage</div>
+      <div class="faq-cat" onclick="filterFaq('paiement',this)" id="fc-pay">Paiement</div>
+      <div class="faq-cat" onclick="filterFaq('technique',this)" id="fc-tech">Technique</div>
+    </div>
+    <div id="faqList"></div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="page" id="page-success">
+  <div class="success-box">
+    <div class="success-icon"><i class="ti ti-check"></i></div>
+    <div class="section-title" id="suc-title">Paiement confirmé !</div>
+    <div class="section-sub" id="suc-sub">Vos appareils sont en cours d'enregistrement.<br>Vous recevrez un email de confirmation dans quelques instants.</div>
+    <button class="btn-primary" onclick="goto('accueil')" style="margin:0 auto;"><i class="ti ti-home"></i><span id="suc-btn">Retour à l'accueil</span></button>
+  </div>
+</div>
+
 <div class="footer">
-  <div class="footer-text">© 2026 Nanar iCloud · Support : <a href="https://t.me/nanarofficloud" class="footer-link" target="_blank">@nanarofficloud</a></div>
+  <div class="footer-text">© 2026 Nova iCloud · Support : <span class="footer-link" onclick="openTelegram()">@novaicloud</span></div>
+</div>
+
+<!-- CHAT CUSTOM -->
+<div class="chat-bubble" onclick="toggleChat()"><i class="ti ti-message-circle-2"></i></div>
+<div class="chat-box" id="chatBox">
+  <div class="chat-header">
+    <div><div class="chat-title" id="chat-title">Assistant Nova</div><div class="chat-sub" id="chat-sub">Réponse instantanée</div></div>
+    <button class="chat-close" onclick="toggleChat()"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="cmsg bot" id="chat-welcome">Bonjour ! Je suis l'assistant Nova iCloud. Comment puis-je vous aider ?</div>
+  </div>
+  <div class="chat-suggestions" id="chatSuggestions">
+    <div class="chat-sug" onclick="askSug(this)">Prix du déblocage</div>
+    <div class="chat-sug" onclick="askSug(this)">Comment ça marche ?</div>
+    <div class="chat-sug" onclick="askSug(this)">Licence Pro</div>
+    <div class="chat-sug" onclick="askSug(this)">iPhone compatible ?</div>
+  </div>
+  <div class="chat-input-wrap">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Posez votre question..." onkeypress="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()"><i class="ti ti-send"></i></button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const TELEGRAM_URL = 'https://t.me/nanarofficloud';
-const DOWNLOAD_URL = 'https://mega.nz/file/eRkWmC4b#Cm6kypdoUQLeseXa5hta3npGosHM8R63q1md_8B1eys'; 
+const TELEGRAM = 'https://t.me/novaicloud';
+const TELEGRAM_PERSO = 'https://t.me/nanar_off';
+const DOWNLOAD_URL = '#';
+
+const MODELS = ['iPhone 7','iPhone 7 Plus','iPhone 8','iPhone 8 Plus','iPhone X','iPhone XR','iPhone XS','iPhone XS Max','iPhone 11','iPhone 11 Pro','iPhone 11 Pro Max','iPhone SE (2e gen)','iPhone 12 mini','iPhone 12','iPhone 12 Pro','iPhone 12 Pro Max','iPhone 13 mini','iPhone 13','iPhone 13 Pro','iPhone 13 Pro Max','iPhone SE (3e gen)','iPhone 14','iPhone 14 Plus','iPhone 14 Pro','iPhone 14 Pro Max','iPhone 15','iPhone 15 Plus','iPhone 15 Pro','iPhone 15 Pro Max','iPhone 16','iPhone 16 Plus','iPhone 16 Pro','iPhone 16 Pro Max','iPhone 16e','iPhone 17','iPhone 17 Pro','iPhone 17 Pro Max','iPhone Air'];
+
+// ===== TRADUCTIONS =====
+const T = {
+  fr: {
+    'nav.avis':'Avis','nav.faq':'FAQ',
+    'h.badge':'Service disponible 24h/24',
+    'h.title':'Débloquez votre iPhone<br><span class="grad">en quelques minutes</span>',
+    'h.sub':'Logiciel professionnel de déblocage iCloud. Rapide, sécurisé, fiable.',
+    'h.dl':'Télécharger Windows','h.unlock':'Débloquer un iPhone',
+    's.today':'iPhones débloqués aujourd\'hui','s.sat':'Clients satisfaits','s.sup':'Support disponible',
+    'f1.t':'Rapide','f1.d':'Déblocage en quelques minutes. Le logiciel détecte tout automatiquement.',
+    'f2.t':'Sécurisé','f2.d':'Données protégées et chiffrées. Jamais partagées.',
+    'f3.t':'Support 24/7','f3.d':'Notre équipe répond en quelques minutes sur Telegram.',
+    'av.title':'Ils nous font confiance','av.sub':'Ce que disent nos clients',
+    'tab.login':'Connexion','tab.register':'Inscription',
+    'lbl.pwd':'MOT DE PASSE','lbl.nom':'NOM','lbl.prenom':'PRÉNOM',
+    'btn.login':'Se connecter','btn.register':'Créer mon compte',
+    'hint.login':'Pas encore de compte ? <span class="auth-link" onclick="switchAuth(\'register\')">Inscrivez-vous</span>',
+    'hint.reg':'<span class="auth-link" onclick="switchAuth(\'login\')">Déjà un compte ? Connectez-vous</span>',
+    'tab.debl':'Déblocage','tab.lic':'Licence Pro',
+    'dl.title':'Débloquer 1 iPhone','dl.sub':'Entrez les informations de votre appareil',
+    'dl.price':'/ appareil','lbl.model':'MODÈLE','model.ph':'Sélectionner un modèle...',
+    'btn.payer':'Payer par carte — 50€',
+    'lr.title':'Connexion requise','lr.sub':'Connectez-vous pour accéder au déblocage','lr.btn':'Se connecter',
+    'lic.name':'Licence Pro à vie','lic.sub':'paiement unique · à vie',
+    'lic.f1':'<strong>Déblocages illimités</strong> — plus besoin de payer 50€',
+    'lic.f2':'Valable <strong>à vie</strong>, sans abonnement',
+    'lic.f3':'Rentabilisé dès <strong>7 déblocages</strong>',
+    'lic.f4':'Idéal pour les <strong>revendeurs</strong>',
+    'lic.info':'⏳ Après votre paiement, la licence sera activée manuellement dans les prochaines heures.',
+    'btn.lic':'Acheter par carte — 350€','lic.or':'ou','btn.tg.lic':'Payer via Telegram',
+    'avis.page.title':'Avis clients','avis.page.sub':'Les retours de notre communauté',
+    'avis.leave':'Laisser un avis','avis.lr':'Connectez-vous pour laisser un avis',
+    'avis.note':'VOTRE NOTE','avis.msg':'MESSAGE','avis.mod':'Votre avis sera publié après validation',
+    'faq.sub':'Toutes les réponses à vos questions',
+    'fc.all':'Toutes','fc.debl':'Déblocage','fc.pay':'Paiement','fc.tech':'Technique',
+    'suc.title':'Paiement confirmé !','suc.sub':'Vos appareils sont en cours d\'enregistrement.<br>Vous recevrez un email de confirmation.',
+    'suc.btn':'Retour à l\'accueil',
+    'chat.title':'Assistant Nova','chat.sub':'Réponse instantanée',
+    'chat.welcome':'Bonjour ! Je suis l\'assistant Nova iCloud. Comment puis-je vous aider ?'
+  },
+  en: {
+    'nav.avis':'Reviews','nav.faq':'FAQ',
+    'h.badge':'Service available 24/7',
+    'h.title':'Unlock your iPhone<br><span class="grad">in minutes</span>',
+    'h.sub':'Professional iCloud unlocking software. Fast, secure, reliable.',
+    'h.dl':'Download for Windows','h.unlock':'Unlock an iPhone',
+    's.today':'iPhones unlocked today','s.sat':'Satisfied clients','s.sup':'Support available',
+    'f1.t':'Fast','f1.d':'Unlocking in minutes. The software detects everything automatically.',
+    'f2.t':'Secure','f2.d':'Data protected and encrypted. Never shared.',
+    'f3.t':'24/7 Support','f3.d':'Our team responds in minutes on Telegram.',
+    'av.title':'Trusted by our clients','av.sub':'What our clients say',
+    'tab.login':'Login','tab.register':'Register',
+    'lbl.pwd':'PASSWORD','lbl.nom':'LAST NAME','lbl.prenom':'FIRST NAME',
+    'btn.login':'Sign in','btn.register':'Create account',
+    'hint.login':'No account? <span class="auth-link" onclick="switchAuth(\'register\')">Sign up</span>',
+    'hint.reg':'<span class="auth-link" onclick="switchAuth(\'login\')">Already have an account? Sign in</span>',
+    'tab.debl':'Unlocking','tab.lic':'Pro Licence',
+    'dl.title':'Unlock 1 iPhone','dl.sub':'Enter your device information',
+    'dl.price':'/ device','lbl.model':'MODEL','model.ph':'Select a model...',
+    'btn.payer':'Pay by card — €50',
+    'lr.title':'Login required','lr.sub':'Sign in to access the unlocking service','lr.btn':'Sign in',
+    'lic.name':'Lifetime Pro Licence','lic.sub':'one-time payment · lifetime',
+    'lic.f1':'<strong>Unlimited unlocking</strong> — no more €50 each time',
+    'lic.f2':'Valid <strong>for life</strong>, no subscription',
+    'lic.f3':'Break-even after <strong>7 unlocks</strong>',
+    'lic.f4':'Perfect for <strong>resellers</strong>',
+    'lic.info':'⏳ After payment, your licence will be activated manually within a few hours.',
+    'btn.lic':'Buy by card — €350','lic.or':'or','btn.tg.lic':'Pay via Telegram',
+    'avis.page.title':'Client reviews','avis.page.sub':'Feedback from our community',
+    'avis.leave':'Leave a review','avis.lr':'Sign in to leave a review',
+    'avis.note':'YOUR RATING','avis.msg':'MESSAGE','avis.mod':'Your review will be published after moderation',
+    'faq.sub':'All answers to your questions',
+    'fc.all':'All','fc.debl':'Unlocking','fc.pay':'Payment','fc.tech':'Technical',
+    'suc.title':'Payment confirmed!','suc.sub':'Your devices are being registered.<br>You will receive a confirmation email.',
+    'suc.btn':'Back to home',
+    'chat.title':'Nova Assistant','chat.sub':'Instant response',
+    'chat.welcome':'Hello! I\'m the Nova iCloud assistant. How can I help you?'
+  }
+};
+
+const AVIS_FACTICES = [
+  {nom:'Lucas',note:5,msg:{fr:'Service rapide, mon iPhone débloqué en quelques minutes. Je recommande !',en:'Fast service, my iPhone unlocked in minutes. Highly recommend!'}},
+  {nom:'Sarah',note:5,msg:{fr:'Super sérieux, support très réactif sur Telegram. Parfait.',en:'Very professional, responsive support on Telegram. Perfect.'}},
+  {nom:'Mehdi',note:5,msg:{fr:'J\'avais des doutes mais tout est nickel. Merci Nova iCloud !',en:'I had doubts but everything is great. Thank you Nova iCloud!'}},
+  {nom:'Julie',note:5,msg:{fr:'Rapide, efficace. Le meilleur service de déblocage !',en:'Fast and efficient. The best unlocking service!'}},
+  {nom:'Karim',note:4,msg:{fr:'Très bon service, iPhone débloqué rapidement. Recommande.',en:'Very good service, iPhone unlocked quickly. Recommend.'}}
+];
+
+const FAQ_DATA = {
+  fr: [
+    {cat:'deblocage',q:'Comment fonctionne le déblocage ?',a:'Créez un compte, allez sur la page Déblocage. Entrez le modèle et l\'IMEI de votre iPhone. Payez par carte bancaire. Votre IMEI est enregistré automatiquement. Branchez votre iPhone au logiciel et cliquez Débloquer.'},
+    {cat:'deblocage',q:'Combien de temps prend le déblocage ?',a:'L\'IMEI est enregistré instantanément après paiement. Le déblocage via le logiciel prend moins de 2 minutes.'},
+    {cat:'deblocage',q:'Quels iPhones sont compatibles ?',a:'iPhone 7 jusqu\'aux derniers modèles (iPhone 17, iPhone Air). Contactez-nous si vous avez un doute.'},
+    {cat:'deblocage',q:'À quoi sert la Licence Pro ?',a:'La Licence Pro à 350€ vous permet de débloquer un nombre illimité d\'iPhones à vie. Rentabilisée dès 7 déblocages. Idéal pour les revendeurs.'},
+    {cat:'paiement',q:'Quels moyens de paiement acceptez-vous ?',a:'Carte bancaire (Visa, Mastercard) via Stripe pour le déblocage. Pour la licence : Crypto, PCS, Paysafecard, Skrill via Telegram.'},
+    {cat:'paiement',q:'Le paiement par carte est-il sécurisé ?',a:'Oui, les paiements sont traités par Stripe. Vos données bancaires ne transitent jamais par nos serveurs.'},
+    {cat:'paiement',q:'Comment fonctionne la Licence Pro ?',a:'Après paiement, la licence est activée manuellement dans les prochaines heures. Vous recevrez un email de confirmation.'},
+    {cat:'technique',q:'Mon iPhone n\'est pas détecté',a:'Vérifiez le câble USB, déverrouillez l\'iPhone et acceptez "Faire confiance à cet ordinateur". Redémarrez ensuite le logiciel.'},
+    {cat:'technique',q:'Est-ce sécurisé pour mon iPhone ?',a:'Oui, notre procédé est non-invasif. Il utilise les outils officiels Apple et ne modifie pas votre système.'}
+  ],
+  en: [
+    {cat:'deblocage',q:'How does unlocking work?',a:'Create an account, go to the Unlock page. Enter your iPhone model and IMEI. Pay by card. Your IMEI is registered automatically. Connect your iPhone to the software and click Unlock.'},
+    {cat:'deblocage',q:'How long does unlocking take?',a:'The IMEI is registered instantly after payment. Unlocking via the software takes less than 2 minutes.'},
+    {cat:'deblocage',q:'Which iPhones are compatible?',a:'iPhone 7 up to the latest models (iPhone 17, iPhone Air). Contact us if unsure.'},
+    {cat:'deblocage',q:'What is the Pro Licence for?',a:'The Pro Licence at €350 allows you to unlock unlimited iPhones for life. Break-even after 7 unlocks. Perfect for resellers.'},
+    {cat:'paiement',q:'What payment methods do you accept?',a:'Bank card (Visa, Mastercard) via Stripe for unlocking. For the licence: Crypto, PCS, Paysafecard, Skrill via Telegram.'},
+    {cat:'paiement',q:'Is card payment secure?',a:'Yes, payments are processed by Stripe. Your banking data never passes through our servers.'},
+    {cat:'paiement',q:'How does the Pro Licence work?',a:'After payment, the licence is activated manually within a few hours. You will receive a confirmation email.'},
+    {cat:'technique',q:'My iPhone is not detected',a:'Check the USB cable, unlock the iPhone and accept "Trust this computer". Then restart the software.'},
+    {cat:'technique',q:'Is this safe for my iPhone?',a:'Yes, our process is non-invasive. It uses official Apple tools and does not modify your system.'}
+  ]
+};
+
+// ===== CHAT IA CUSTOM (sans API) =====
+const CHAT_RULES = {
+  fr: [
+    {keys:['prix','coût','combien','tarif','euro','€'],rep:'Le déblocage coûte **50€** par iPhone (paiement par carte). La Licence Pro à vie est à **350€** (déblocages illimités).'},
+    {keys:['licence','pro','illimité','revendeur'],rep:'La **Licence Pro à 350€** permet de débloquer un nombre illimité d\'iPhones à vie. Rentabilisée dès 7 déblocages. Idéale pour les revendeurs. Vous pouvez l\'acheter dans l\'onglet "Licence Pro" de la page Déblocage.'},
+    {keys:['fonctionne','marche','comment','processus','étape'],rep:'C\'est simple :\n1️⃣ Créez un compte sur le site\n2️⃣ Page Déblocage → entrez le modèle + IMEI\n3️⃣ Payez par carte → IMEI enregistré automatiquement\n4️⃣ Branchez l\'iPhone au logiciel → cliquez Débloquer ✅'},
+    {keys:['temps','durée','long','rapide','délai','minute','heure'],rep:'Le déblocage est **quasi instantané** ! Après paiement par carte, l\'IMEI est enregistré automatiquement. Il suffit ensuite de lancer le logiciel et de brancher l\'iPhone — moins de 2 minutes.'},
+    {keys:['compatible','iphone','modèle','version','7','8','x','11','12','13','14','15','16','17'],rep:'Le logiciel est compatible avec **iPhone 7 à iPhone 17** (incluant iPhone Air). Si vous avez un doute sur votre modèle, contactez-nous sur Telegram.'},
+    {keys:['imei','numéro','trouver','où'],rep:'Votre IMEI se trouve dans Réglages → Général → Informations. Il fait 15 chiffres et commence par 35. Vous pouvez aussi le trouver sur la boîte de l\'iPhone.'},
+    {keys:['paiement','payer','carte','stripe','visa','mastercard','crypto','pcs','paysafe','skrill'],rep:'Pour le **déblocage** : paiement uniquement par carte bancaire (Stripe). Pour la **licence** : carte, Crypto, PCS, Paysafecard ou Skrill via Telegram.'},
+    {keys:['sécurisé','sécurité','danger','risque','fiable'],rep:'Oui, c\'est **100% sécurisé** ! Vos paiements sont traités par Stripe (leader mondial). Notre procédé de déblocage utilise les outils officiels Apple et ne modifie pas votre iPhone.'},
+    {keys:['détecte','détecté','trouvé','usb','câble','driver'],rep:'Si l\'iPhone n\'est pas détecté :\n• Vérifiez le câble USB\n• Déverrouillez l\'iPhone\n• Acceptez "Faire confiance à cet ordinateur"\n• Redémarrez le logiciel\nSi le problème persiste, contactez notre support.'},
+    {keys:['télécharger','logiciel','windows','download','installer'],rep:'Le logiciel Windows est disponible en téléchargement gratuit sur notre site. Cliquez sur "Télécharger Windows" sur la page d\'accueil.'},
+    {keys:['merci','parfait','super','nickel','top'],rep:'Merci ! 😊 N\'hésitez pas si vous avez d\'autres questions. Notre support Telegram (@novaicloud) est disponible 24h/24.'},
+    {keys:['bonjour','salut','hello','bonsoir'],rep:'Bonjour ! Je suis l\'assistant Nova iCloud. Je peux vous aider sur les prix, la compatibilité, le fonctionnement du déblocage... Que voulez-vous savoir ?'}
+  ],
+  en: [
+    {keys:['price','cost','how much','fee','euro','€'],rep:'Unlocking costs **€50** per iPhone (card payment). The lifetime Pro Licence is **€350** (unlimited unlocks).'},
+    {keys:['licence','license','pro','unlimited','reseller'],rep:'The **Pro Licence at €350** allows unlimited iPhone unlocking for life. Break-even after 7 unlocks. Perfect for resellers.'},
+    {keys:['work','how','process','step','function'],rep:'It\'s simple:\n1️⃣ Create an account\n2️⃣ Unlock page → enter model + IMEI\n3️⃣ Pay by card → IMEI registered automatically\n4️⃣ Connect iPhone to software → click Unlock ✅'},
+    {keys:['time','long','fast','quick','minute','hour','delay'],rep:'Unlocking is **near-instant**! After card payment, the IMEI is registered automatically. Just launch the software and connect the iPhone — under 2 minutes.'},
+    {keys:['compatible','iphone','model','version'],rep:'The software is compatible with **iPhone 7 to iPhone 17** (including iPhone Air).'},
+    {keys:['imei','number','find','where'],rep:'Your IMEI is in Settings → General → About. It\'s 15 digits starting with 35. You can also find it on the iPhone box.'},
+    {keys:['payment','pay','card','stripe','visa','crypto'],rep:'For **unlocking**: bank card only (Stripe). For the **licence**: card, Crypto, PCS, Paysafecard or Skrill via Telegram.'},
+    {keys:['safe','secure','risk','reliable'],rep:'Yes, it\'s **100% secure**! Payments processed by Stripe. Our unlocking process uses official Apple tools and doesn\'t modify your iPhone.'},
+    {keys:['detect','found','usb','cable','driver'],rep:'If iPhone not detected:\n• Check USB cable\n• Unlock the iPhone\n• Accept "Trust this computer"\n• Restart the software'},
+    {keys:['download','software','windows','install'],rep:'The Windows software is available for free download on our site. Click "Download for Windows" on the homepage.'},
+    {keys:['thanks','perfect','great','awesome'],rep:'Thank you! 😊 Feel free to ask if you have other questions. Our Telegram support (@novaicloud) is available 24/7.'},
+    {keys:['hello','hi','hey','good'],rep:'Hello! I\'m the Nova iCloud assistant. I can help with prices, compatibility, how unlocking works... What would you like to know?'}
+  ]
+};
+
+function getBotResponse(msg) {
+  const lower = msg.toLowerCase();
+  const rules = CHAT_RULES[currentLang] || CHAT_RULES.fr;
+  for(const rule of rules) {
+    if(rule.keys.some(k => lower.includes(k))) {
+      return {text: rule.rep, telegram: false};
+    }
+  }
+  const fallback = {
+    fr: `Je n'ai pas bien compris votre question. Vous pouvez me demander les **prix**, la **compatibilité**, **comment ça marche**, ou contacter notre support directement.`,
+    en: `I didn't quite understand your question. You can ask me about **prices**, **compatibility**, **how it works**, or contact our support directly.`
+  };
+  return {text: fallback[currentLang]||fallback.fr, telegram: true};
+}
 
 let currentUser = null;
-let selectedPack = 2;
+let selectedStar = 0;
+let currentLang = 'fr';
 
-const IPHONE_MODELS = ['iPhone 7','iPhone 7 Plus','iPhone 8','iPhone 8 Plus','iPhone X','iPhone XR','iPhone XS','iPhone XS Max','iPhone 11','iPhone 11 Pro','iPhone 11 Pro Max','iPhone SE (2e gen)','iPhone 12 mini','iPhone 12','iPhone 12 Pro','iPhone 12 Pro Max','iPhone 13 mini','iPhone 13','iPhone 13 Pro','iPhone 13 Pro Max','iPhone SE (3e gen)','iPhone 14','iPhone 14 Plus','iPhone 14 Pro','iPhone 14 Pro Max','iPhone 15','iPhone 15 Plus','iPhone 15 Pro','iPhone 15 Pro Max','iPhone 16','iPhone 16 Plus','iPhone 16 Pro','iPhone 16 Pro Max','iPhone 16e','iPhone 17','iPhone 17 Pro','iPhone 17 Pro Max','iPhone Air'];
-const PACK_PRICES = { 1:50, 2:70, 3:120 };
+// ===== LANGUE =====
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach((b,i)=>b.classList.toggle('active',i===(lang==='fr'?0:1)));
+  const t = T[lang];
+  const ids = {
+    'nl-avis':'nav.avis','nl-faq':'nav.faq',
+    'h-badge':'h.badge','h-sub':'h.sub','h-dl':'h.dl','h-unlock':'h.unlock',
+    's-today':'s.today','s-sat':'s.sat','s-sup':'s.sup',
+    'f1-t':'f1.t','f1-d':'f1.d','f2-t':'f2.t','f2-d':'f2.d','f3-t':'f3.t','f3-d':'f3.d',
+    'av-title':'av.title','av-sub':'av.sub',
+    'tab-login':'tab.login','tab-register':'tab.register',
+    'lbl-pwd':'lbl.pwd','lbl-nom':'lbl.nom','lbl-prenom':'lbl.prenom','lbl-pwd2':'lbl.pwd',
+    'loginBtn':'btn.login','registerBtn':'btn.register',
+    'tab-debl':'tab.debl','tab-lic':'tab.lic',
+    'dl-title':'dl.title','dl-sub':'dl.sub','dl-price-lbl':'dl.price','lbl-model':'lbl.model',
+    'btn-payer':'btn.payer','lr-title':'lr.title','lr-sub':'lr.sub','lr-btn':'lr.btn',
+    'lic-name':'lic.name','lic-sub':'lic.sub','lic-f3':'lic.f3','lic-f4':'lic.f4',
+    'lic-info':'lic.info','btn-lic':'btn.lic','lic-or':'lic.or','btn-tg-lic':'btn.tg.lic',
+    'avis-page-title':'avis.page.title','avis-page-sub':'avis.page.sub',
+    'avis-leave':'avis.leave','avis-lr':'avis.lr',
+    'avis-note-lbl':'avis.note','avis-msg-lbl':'avis.msg','avis-mod':'avis.mod',
+    'faq-sub':'faq.sub','fc-all':'fc.all','fc-debl':'fc.debl','fc-pay':'fc.pay','fc-tech':'fc.tech',
+    'suc-title':'suc.title','suc-btn':'suc.btn',
+    'chat-title':'chat.title','chat-sub':'chat.sub','chat-welcome':'chat.welcome',
+    'ml-avis':'nav.avis','ml-faq':'nav.faq'
+  };
+  const htmlIds = ['h-title','hint-login','hint-reg','auth-hint-login','auth-hint-reg',
+    'lic-f1','lic-f2','suc-sub'];
+  Object.entries(ids).forEach(([id,key])=>{
+    const el=document.getElementById(id);
+    if(el&&t[key]) el.textContent=t[key];
+  });
+  ['lic-f1','lic-f2','suc-sub'].forEach(id=>{
+    const el=document.getElementById(id);
+    const key=ids[id]||id.replace(/-/g,'.');
+    if(el&&t[key]) el.innerHTML=t[key];
+  });
+  document.getElementById('h-title').innerHTML=t['h.title']||'';
+  document.getElementById('auth-hint-login').innerHTML=t['hint.login']||'';
+  document.getElementById('auth-hint-reg').innerHTML=t['hint.reg']||'';
+  const msel=document.getElementById('model1');
+  if(msel) msel.options[0].text=t['model.ph']||'Sélectionner un modèle...';
+  renderAvisCarousel();
+  if(document.getElementById('page-faq').classList.contains('active')) renderFaq('all');
+}
 
 // ===== NAVIGATION =====
 function goto(page) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
-  closeNav();
   window.scrollTo(0,0);
-  if (page==='debloquer') renderDeblocage();
-  if (page==='avis') renderAvis();
+  if(page==='debloquer') renderDebloquer();
+  if(page==='avis') renderAvisPage();
+  if(page==='faq') renderFaq('all');
 }
-function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
-function closeNav() { document.getElementById('navLinks').classList.remove('open'); }
+function gotoDebloquer(){ if(!currentUser){goto('auth');return;} goto('debloquer'); }
+function toggleMobile(){ document.getElementById('mobileMenu').classList.toggle('open'); }
+function openTelegram(){ window.open(TELEGRAM,'_blank'); }
+function telecharger(){ if(DOWNLOAD_URL==='#'){showToast(currentLang==='fr'?'Téléchargement bientôt disponible':'Download coming soon','error');return;} window.location.href=DOWNLOAD_URL; }
 
-// ===== AUTH UI =====
+// ===== AUTH =====
 function switchAuth(mode) {
-  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.auth-tab')[mode==='login'?0:1].classList.add('active');
-  document.getElementById('loginForm').style.display = mode==='login'?'block':'none';
-  document.getElementById('registerForm').style.display = mode==='register'?'block':'none';
-  // relancer l'animation
-  const f = document.getElementById(mode==='login'?'loginForm':'registerForm');
-  f.classList.remove('auth-form-anim'); void f.offsetWidth; f.classList.add('auth-form-anim');
+  document.getElementById('tab-login').classList.toggle('active',mode==='login');
+  document.getElementById('tab-register').classList.toggle('active',mode==='register');
+  document.getElementById('loginForm').style.display=mode==='login'?'block':'none';
+  document.getElementById('registerForm').style.display=mode==='register'?'block':'none';
   document.getElementById('authError').classList.remove('show');
 }
-function togglePwd(id, btn) {
-  const inp = document.getElementById(id);
-  const icon = btn.querySelector('i');
-  if (inp.type==='password') { inp.type='text'; icon.className='ti ti-eye-off'; }
-  else { inp.type='password'; icon.className='ti ti-eye'; }
-}
-function showAuthError(msg) {
-  const el = document.getElementById('authError');
-  el.textContent = msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), 4000);
-}
-
-async function doLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPwd').value;
-  const btn = document.getElementById('loginBtn');
-  if (!email || !password) return showAuthError('Email et mot de passe requis');
-  btn.disabled = true; btn.textContent = 'Connexion...';
-  try {
-    const r = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
-    const d = await r.json();
-    if (d.success) { currentUser = d.user; updateNavAuth(); goto('accueil'); showToast('Connecté avec succès', 'success'); }
-    else showAuthError(d.error||'Erreur');
-  } catch(e){ showAuthError('Erreur de connexion'); }
-  finally { btn.disabled=false; btn.textContent='Se connecter'; }
-}
-
-async function doRegister() {
-  const nom = document.getElementById('regNom').value.trim();
-  const prenom = document.getElementById('regPrenom').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPwd').value;
-  const btn = document.getElementById('registerBtn');
-  if (!nom||!prenom||!email||!password) return showAuthError('Tous les champs sont requis');
-  if (password.length<6) return showAuthError('Mot de passe trop court (min 6)');
-  btn.disabled = true; btn.textContent = 'Création...';
-  try {
-    const r = await fetch('/api/register', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({nom,prenom,email,password}) });
-    const d = await r.json();
-    if (d.success) { currentUser = d.user; updateNavAuth(); goto('accueil'); showToast('Compte créé ! Email de bienvenue envoyé.', 'success'); }
-    else showAuthError(d.error||'Erreur');
-  } catch(e){ showAuthError('Erreur'); }
-  finally { btn.disabled=false; btn.textContent='Créer mon compte'; }
-}
-
-async function doLogout() {
-  await fetch('/api/logout', { method:'POST' });
-  currentUser = null; updateNavAuth(); goto('accueil'); showToast('Déconnecté', 'success');
-}
-
-function updateNavAuth() {
-  const el = document.getElementById('navAuth');
-  if (currentUser) {
-    const initiales = (currentUser.prenom?.[0]||'')+(currentUser.nom?.[0]||'');
-    el.innerHTML = `<div class="nav-user">
-      <div class="nav-avatar">${initiales.toUpperCase()}</div>
-      <div class="nav-link" onclick="doLogout()">Déconnexion</div>
-    </div>`;
+function togglePwd(id,btn){ const i=document.getElementById(id),ic=btn.querySelector('i'); if(i.type==='password'){i.type='text';ic.className='ti ti-eye-off';}else{i.type='password';ic.className='ti ti-eye';} }
+function showAuthError(msg){ const el=document.getElementById('authError'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),4000); }
+function updateNavAuth(){
+  const el=document.getElementById('navAuth'),mel=document.getElementById('mobileAuth');
+  if(currentUser){
+    const ini=((currentUser.prenom?.[0]||'')+(currentUser.nom?.[0]||'')).toUpperCase();
+    el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;"><div style="width:32px;height:32px;border-radius:50%;background:rgba(109,40,217,0.2);border:0.5px solid rgba(139,92,246,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#a78bfa;">${ini}</div><div class="nav-link" onclick="doLogout()">Déconnexion</div></div>`;
+    mel.innerHTML=`<button class="btn-full" onclick="doLogout();toggleMobile()">Déconnexion</button>`;
   } else {
-    el.innerHTML = `<button class="nav-cta" onclick="goto('auth')">Connexion</button>`;
+    el.innerHTML=`<button class="btn-nav" onclick="goto('auth')">${currentLang==='fr'?'Connexion':'Login'}</button>`;
+    mel.innerHTML=`<button class="btn-full" onclick="goto('auth');toggleMobile()">${currentLang==='fr'?'Connexion':'Login'}</button>`;
   }
 }
-
-// ===== DEBLOCAGE =====
-function renderDeblocage() {
-  if (!currentUser) {
-    document.getElementById('unlockLoginRequired').style.display = 'block';
-    document.getElementById('unlockContent').style.display = 'none';
-  } else {
-    document.getElementById('unlockLoginRequired').style.display = 'none';
-    document.getElementById('unlockContent').style.display = 'block';
-    selectPack(selectedPack);
-  }
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPwd').value,btn=document.getElementById('loginBtn');
+  if(!email||!password) return showAuthError(currentLang==='fr'?'Email et mot de passe requis':'Email and password required');
+  btn.disabled=true; btn.textContent=currentLang==='fr'?'Connexion...':'Signing in...';
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    const d=await r.json();
+    if(d.success){currentUser=d.user;updateNavAuth();goto('accueil');showToast(currentLang==='fr'?'Connecté !':'Logged in!','success');}
+    else showAuthError(d.error||'Erreur');
+  }catch(e){showAuthError('Erreur de connexion');}
+  finally{btn.disabled=false;btn.textContent=T[currentLang]['btn.login'];}
 }
-
-function selectPack(n) {
-  selectedPack = n;
-  document.querySelectorAll('.pack').forEach(p=>p.classList.remove('selected'));
-  document.querySelector(`.pack[data-pack="${n}"]`).classList.add('selected');
-  document.getElementById('totalValue').textContent = PACK_PRICES[n]+'€';
-  renderImeiBlocks(n);
+async function doRegister(){
+  const nom=document.getElementById('regNom').value.trim(),prenom=document.getElementById('regPrenom').value.trim(),email=document.getElementById('regEmail').value.trim(),password=document.getElementById('regPwd').value,btn=document.getElementById('registerBtn');
+  if(!nom||!prenom||!email||!password) return showAuthError(currentLang==='fr'?'Tous les champs sont requis':'All fields are required');
+  if(password.length<6) return showAuthError(currentLang==='fr'?'Mot de passe trop court':'Password too short');
+  btn.disabled=true; btn.textContent=currentLang==='fr'?'Création...':'Creating...';
+  try{
+    const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nom,prenom,email,password})});
+    const d=await r.json();
+    if(d.success){currentUser=d.user;updateNavAuth();goto('accueil');showToast(currentLang==='fr'?'Compte créé !':'Account created!','success');}
+    else showAuthError(d.error||'Erreur');
+  }catch(e){showAuthError('Erreur');}
+  finally{btn.disabled=false;btn.textContent=T[currentLang]['btn.register'];}
 }
+async function doLogout(){ await fetch('/api/logout',{method:'POST'}); currentUser=null; updateNavAuth(); goto('accueil'); }
 
-function renderImeiBlocks(n) {
-  const container = document.getElementById('imeiBlocks');
-  let html = '';
-  for (let i=1; i<=n; i++) {
-    html += `
-      <div class="imei-block">
-        <div class="imei-block-title"><span class="imei-block-num">${i}</span>iPhone ${i}</div>
-        <div class="form-group">
-          <label class="form-label">Modèle</label>
-          <select class="form-input" id="model${i}">
-            <option value="">Sélectionner un modèle...</option>
-            ${IPHONE_MODELS.map(m=>`<option value="${m}">${m}</option>`).join('')}
-          </select>
-        </div>
-        <div class="form-group" style="margin-bottom:0;">
-          <label class="form-label">IMEI (15 chiffres)</label>
-          <input type="text" class="form-input" id="imei${i}" placeholder="35XXXXXXXXXXXXX" maxlength="15" style="font-family:monospace;">
-        </div>
-      </div>`;
-  }
-  container.innerHTML = html;
+// ===== DÉBLOCAGE =====
+function renderDebloquer(){
+  if(!currentUser){document.getElementById('dlLoginReq').style.display='block';document.getElementById('dlContent').style.display='none';}
+  else{document.getElementById('dlLoginReq').style.display='none';document.getElementById('dlContent').style.display='block';}
 }
-
-function contactTelegram() {
-  const n = selectedPack;
-  let lignes = [];
-  for (let i=1; i<=n; i++) {
-    const model = document.getElementById('model'+i)?.value;
-    const imei = document.getElementById('imei'+i)?.value.trim();
-    if (!model) return showToast(`Sélectionnez le modèle de l'iPhone ${i}`, 'error');
-    if (!/^35\d{13}$/.test(imei)) return showToast(`IMEI de l'iPhone ${i} invalide (15 chiffres, commence par 35)`, 'error');
-    lignes.push(`- ${model} — IMEI : ${imei}`);
-  }
-  const total = PACK_PRICES[n];
-  const message = `Bonjour, je souhaite débloquer ${n} iPhone${n>1?'s':''} :\n${lignes.join('\n')}\n\nTotal : ${total}€\nMon compte : ${currentUser.email}`;
-  window.open(`https://t.me/nanar_off?text=${encodeURIComponent(message)}`, '_blank');
+function switchDl(tab){
+  document.getElementById('tab-debl').classList.toggle('active',tab==='deblocage');
+  document.getElementById('tab-lic').classList.toggle('active',tab==='licence');
+  document.getElementById('dlDeblocage').style.display=tab==='deblocage'?'block':'none';
+  document.getElementById('dlLicence').style.display=tab==='licence'?'block':'none';
 }
-
-function contactTelegramLicence() {
-  const email = currentUser ? currentUser.email : '';
-  const message = `Bonjour, je souhaite acheter la Licence Pro à vie (450€).${email ? '\n\nMon compte : '+email : ''}`;
-  window.open(`https://t.me/nanar_off?text=${encodeURIComponent(message)}`, '_blank');
+async function payerStripe(){
+  const model=document.getElementById('model1').value,imei=document.getElementById('imei1').value.trim();
+  if(!model) return showToast(currentLang==='fr'?'Sélectionnez un modèle':'Select a model','error');
+  if(!/^35\d{13}$/.test(imei)) return showToast(currentLang==='fr'?'IMEI invalide (15 chiffres, commence par 35)':'Invalid IMEI (15 digits, starts with 35)','error');
+  const btn=document.getElementById('btnPayerStripe');
+  btn.disabled=true; btn.innerHTML='<i class="ti ti-loader"></i>Redirection...';
+  try{
+    const r=await fetch('/api/create-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pack:1,imeis:[{model,imei}]})});
+    const d=await r.json();
+    if(d.success&&d.url) window.location.href=d.url;
+    else showToast(d.error||'Erreur Stripe','error');
+  }catch(e){showToast('Erreur','error');}
+  finally{btn.disabled=false;btn.innerHTML=`<i class="ti ti-credit-card"></i>${T[currentLang]['btn.payer']||'Payer par carte — 50€'}`;}
 }
-
-// ===== AUTRES =====
-function telecharger() {
-  if (DOWNLOAD_URL === '#') { showToast('Le téléchargement sera bientôt disponible', 'error'); return; }
-  window.location.href = DOWNLOAD_URL;
+async function payerLicenceStripe(){
+  const btn=document.getElementById('btnPayerLicence');
+  btn.disabled=true; btn.innerHTML='<i class="ti ti-loader"></i>Redirection...';
+  try{
+    const r=await fetch('/api/create-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pack:'licence',imeis:[]})});
+    const d=await r.json();
+    if(d.success&&d.url) window.location.href=d.url;
+    else showToast(d.error||'Erreur Stripe','error');
+  }catch(e){showToast('Erreur','error');}
+  finally{btn.disabled=false;btn.innerHTML=`<i class="ti ti-credit-card"></i>${T[currentLang]['btn.lic']||'Acheter par carte — 350€'}`;}
 }
-function toggleFaq(el) { el.classList.toggle('open'); }
+function contactTelegramLicence(){
+  const msg=currentLang==='fr'?`Bonjour, je souhaite acheter la Licence Pro à vie (350€).${currentUser?'\nCompte : '+currentUser.email:''}`:`Hello, I'd like to buy the Lifetime Pro Licence (€350).${currentUser?'\nAccount: '+currentUser.email:''}`;
+  window.open(`${TELEGRAM}?text=${encodeURIComponent(msg)}`,'_blank');
+}
 
 // ===== AVIS =====
-let selectedStar = 0;
-
-function starsHtml(n) {
-  let h = '';
-  for (let i=1; i<=5; i++) h += `<i class="ti ti-star-filled" style="${i<=n?'':'color:#E5E7EB;'}"></i>`;
-  return h;
+function starsHtml(n){let h='';for(let i=1;i<=5;i++)h+=`<i class="ti ti-star-filled" style="${i<=n?'color:#fbbf24':'color:rgba(255,255,255,0.1)'}"></i>`;return h;}
+function renderAvisCarousel(){
+  const track=document.getElementById('avisTrack');
+  if(!track) return;
+  const all=[...AVIS_FACTICES,...AVIS_FACTICES];
+  track.innerHTML=all.map(a=>`<div class="avis-card"><div class="avis-stars">${starsHtml(a.note)}</div><div class="avis-msg">${a.msg[currentLang]||a.msg.fr}</div><div class="avis-author"><div class="avis-avatar">${a.nom[0]}</div><div><div class="avis-name">${a.nom}</div><div class="avis-date">${currentLang==='fr'?'Client vérifié':'Verified client'}</div></div></div></div>`).join('');
 }
-
-function setStar(n) {
-  selectedStar = n;
-  document.querySelectorAll('#starInput i').forEach(s => {
-    const v = parseInt(s.dataset.star);
-    s.className = v <= n ? 'ti ti-star-filled active' : 'ti ti-star';
-  });
-}
-
-async function renderAvis() {
-  // Formulaire selon connexion
-  if (currentUser) {
-    document.getElementById('avisForm').style.display = 'block';
-    document.getElementById('avisLoginRequired').style.display = 'none';
-  } else {
-    document.getElementById('avisForm').style.display = 'none';
-    document.getElementById('avisLoginRequired').style.display = 'block';
-  }
-  // Charger les avis acceptés
-  try {
-    const r = await fetch('/api/avis');
-    const d = await r.json();
-    const liste = document.getElementById('avisListe');
-    if (d.success && d.data.length > 0) {
-      liste.innerHTML = d.data.map(a => `
-        <div class="avis-card" style="width:auto; margin-bottom:12px;">
-          <div class="avis-stars">${starsHtml(a.note)}</div>
-          <div class="avis-msg">${escapeHtml(a.message)}</div>
-          <div class="avis-author">
-            <div class="avis-avatar">${(a.prenom_client?.[0]||'?').toUpperCase()}</div>
-            <div>
-              <div class="avis-name">${escapeHtml(a.prenom_client||'Client')}</div>
-              <div class="avis-date">${formatDate(a.created_at)}</div>
-            </div>
-          </div>
-        </div>`).join('');
-    } else {
-      liste.innerHTML = '<div class="avis-empty">Aucun avis pour le moment. Soyez le premier !</div>';
+async function renderAvisPage(){
+  if(currentUser){document.getElementById('avisFormWrap').style.display='block';document.getElementById('avisLoginReq').style.display='none';}
+  else{document.getElementById('avisFormWrap').style.display='none';document.getElementById('avisLoginReq').style.display='block';}
+  const liste=document.getElementById('avisListe');
+  liste.innerHTML=`<div style="text-align:center;padding:20px;color:var(--text-tertiary);">${currentLang==='fr'?'Chargement...':'Loading...'}</div>`;
+  try{
+    const r=await fetch('/api/avis'),d=await r.json();
+    if(d.success&&d.data.length>0){
+      liste.innerHTML=d.data.map(a=>`<div style="background:var(--card);border:0.5px solid var(--card-border);border-radius:14px;padding:20px;margin-bottom:12px;"><div class="avis-stars" style="margin-bottom:10px;">${starsHtml(a.note)}</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;">${(a.message||'').replace(/</g,'&lt;')}</div><div class="avis-author"><div class="avis-avatar">${(a.prenom_client?.[0]||'?').toUpperCase()}</div><div><div class="avis-name">${a.prenom_client||'Client'}</div><div class="avis-date">${a.created_at?new Date(a.created_at).toLocaleDateString(currentLang==='fr'?'fr-FR':'en-GB'):''}</div></div></div></div>`).join('');
+    }else{
+      liste.innerHTML=`<div style="text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;">${currentLang==='fr'?'Aucun avis pour le moment. Soyez le premier !':'No reviews yet. Be the first!'}</div>`;
     }
-  } catch(e){}
+  }catch(e){liste.innerHTML=`<div style="text-align:center;padding:20px;color:var(--text-tertiary);">${currentLang==='fr'?'Erreur de chargement':'Loading error'}</div>`;}
+}
+function setStar(n){selectedStar=n;document.querySelectorAll('#starInput i').forEach(s=>{s.className=parseInt(s.dataset.star)<=n?'ti ti-star-filled active':'ti ti-star';});}
+async function envoyerAvis(){
+  const msg=document.getElementById('avisMsg').value.trim(),btn=document.getElementById('avisBtn');
+  if(selectedStar===0) return showToast(currentLang==='fr'?'Sélectionnez une note':'Select a rating','error');
+  if(msg.length<3) return showToast(currentLang==='fr'?'Message trop court':'Message too short','error');
+  btn.disabled=true;
+  try{
+    const r=await fetch('/api/avis',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({note:selectedStar,message:msg})});
+    const d=await r.json();
+    if(d.success){showToast(currentLang==='fr'?'Avis envoyé ! Merci.':'Review sent! Thank you.','success');document.getElementById('avisMsg').value='';setStar(0);selectedStar=0;}
+    else showToast(d.error||'Erreur','error');
+  }catch(e){showToast('Erreur','error');}
+  finally{btn.disabled=false;}
 }
 
-async function envoyerAvis() {
-  const message = document.getElementById('avisMessage').value.trim();
-  const btn = document.getElementById('avisSubmitBtn');
-  if (selectedStar === 0) return showToast('Sélectionnez une note', 'error');
-  if (message.length < 3) return showToast('Message trop court', 'error');
+// ===== FAQ =====
+function renderFaq(cat){
+  const list=document.getElementById('faqList');
+  const data=FAQ_DATA[currentLang]||FAQ_DATA.fr;
+  const items=cat==='all'?data:data.filter(f=>f.cat===cat);
+  list.innerHTML=items.map(f=>`<div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q"><div class="faq-q-text">${f.q}</div><i class="ti ti-chevron-down faq-chevron"></i></div><div class="faq-a">${f.a}</div></div>`).join('');
+}
+function filterFaq(cat,el){document.querySelectorAll('.faq-cat').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderFaq(cat);}
+function toggleFaq(el){el.classList.toggle('open');}
 
-  btn.disabled = true; btn.textContent = 'Envoi...';
-  try {
-    const r = await fetch('/api/avis', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({note:selectedStar, message}) });
-    const d = await r.json();
-    if (d.success) {
-      showToast('Avis envoyé ! Il sera publié après validation.', 'success');
-      document.getElementById('avisMessage').value = '';
-      setStar(0); selectedStar = 0;
-    } else {
-      showToast(d.error||'Erreur', 'error');
+// ===== CHAT CUSTOM IA =====
+function toggleChat(){ document.getElementById('chatBox').classList.toggle('open'); }
+function addMsg(text,from){
+  const msgs=document.getElementById('chatMessages');
+  const div=document.createElement('div');
+  div.className=`cmsg ${from}`;
+  div.innerHTML=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+  document.getElementById('chatSuggestions').style.display='none';
+}
+function askSug(el){
+  const msg=el.textContent;
+  addMsg(msg,'user');
+  setTimeout(()=>{
+    const resp=getBotResponse(msg);
+    addMsg(resp.text,'bot');
+    if(resp.telegram){
+      setTimeout(()=>{
+        const a=document.createElement('a');
+        a.href=TELEGRAM; a.target='_blank';
+        a.style.cssText='display:inline-flex;align-items:center;gap:6px;padding:7px 13px;background:rgba(109,40,217,0.15);border:0.5px solid rgba(139,92,246,0.25);border-radius:20px;color:#a78bfa;font-size:11px;font-weight:500;text-decoration:none;margin:4px 0;';
+        a.innerHTML=`<i class="ti ti-brand-telegram"></i>${currentLang==='fr'?'Contacter le support':'Contact support'}`;
+        document.getElementById('chatMessages').appendChild(a);
+        document.getElementById('chatMessages').scrollTop=9999;
+      },200);
     }
-  } catch(e){ showToast('Erreur', 'error'); }
-  finally { btn.disabled = false; btn.textContent = 'Publier mon avis'; }
+  },400);
+}
+function sendChat(){
+  const input=document.getElementById('chatInput'),msg=input.value.trim();
+  if(!msg) return;
+  input.value='';
+  addMsg(msg,'user');
+  setTimeout(()=>{
+    const resp=getBotResponse(msg);
+    addMsg(resp.text,'bot');
+    if(resp.telegram){
+      setTimeout(()=>{
+        const a=document.createElement('a');
+        a.href=TELEGRAM; a.target='_blank';
+        a.style.cssText='display:inline-flex;align-items:center;gap:6px;padding:7px 13px;background:rgba(109,40,217,0.15);border:0.5px solid rgba(139,92,246,0.25);border-radius:20px;color:#a78bfa;font-size:11px;font-weight:500;text-decoration:none;margin:4px 0;';
+        a.innerHTML=`<i class="ti ti-brand-telegram"></i>${currentLang==='fr'?'Contacter le support':'Contact support'}`;
+        document.getElementById('chatMessages').appendChild(a);
+        document.getElementById('chatMessages').scrollTop=9999;
+      },200);
+    }
+  },500);
 }
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+// ===== MODÈLES SELECT =====
+function fillModelSelect(){
+  const sel=document.getElementById('model1');
+  if(!sel) return;
+  const ph=sel.options[0].text;
+  sel.innerHTML=`<option value="">${ph}</option>`+MODELS.map(m=>`<option value="${m}">${m}</option>`).join('');
 }
 
-// ===== CARROUSEL ACCUEIL (avis factices) =====
-const AVIS_FACTICES = [
-  { nom: 'Lucas', note: 5, message: 'Service rapide et efficace, mon iPhone a été débloqué en quelques minutes. Je recommande !' },
-  { nom: 'Sarah', note: 5, message: 'Super sérieux, support très réactif sur Telegram. Tout a marché parfaitement.' },
-  { nom: 'Mehdi', note: 5, message: 'Au top ! J\'avais des doutes au début mais finalement tout est nickel. Merci !' }
-];
-
-function renderCarousel() {
-  const track = document.getElementById('avisTrack');
-  if (!track) return;
-  // Doubler les avis pour un défilement infini fluide
-  const all = [...AVIS_FACTICES, ...AVIS_FACTICES];
-  track.innerHTML = all.map(a => `
-    <div class="avis-card">
-      <div class="avis-stars">${starsHtml(a.note)}</div>
-      <div class="avis-msg">${escapeHtml(a.message)}</div>
-      <div class="avis-author">
-        <div class="avis-avatar">${a.nom[0]}</div>
-        <div>
-          <div class="avis-name">${a.nom}</div>
-          <div class="avis-date">Client vérifié</div>
-        </div>
-      </div>
-    </div>`).join('');
+// ===== PROMO =====
+async function loadPromo(){
+  try{
+    const r=await fetch('/api/promo'),d=await r.json();
+    if(d.promo){const b=document.getElementById('promoBanner');b.textContent=`🔥 ${d.promo.titre} — ${d.promo.message}`;b.classList.add('show');}
+  }catch(e){}
 }
-function showToast(msg, type='') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast show '+type;
-  setTimeout(()=>t.classList.remove('show'), 3000);
+
+// ===== COMPTEUR =====
+function initCounter(){
+  const now=new Date();
+  const seed=now.getFullYear()*10000+(now.getMonth()+1)*100+now.getDate();
+  let val=(seed%160)+80;
+  const el=document.getElementById('counter');
+  el.textContent=val;
+  setInterval(()=>{if(val<280&&Math.random()>0.4){val++;el.textContent=val;}},8000);
+}
+
+// ===== SUCCESS =====
+if(window.location.search.includes('success=1')){
+  window.addEventListener('load',()=>goto('success'));
+}
+
+// ===== TOAST =====
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show '+type;
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
 
 // ===== INIT =====
-(async function init() {
-  try {
-    const r = await fetch('/api/me');
-    const d = await r.json();
-    if (d.authenticated) currentUser = d.user;
-  } catch(e){}
+(async function init(){
+  try{const r=await fetch('/api/me'),d=await r.json();if(d.authenticated) currentUser=d.user;}catch(e){}
+  fillModelSelect();
   updateNavAuth();
-  renderCarousel();
+  renderAvisCarousel();
+  initCounter();
+  loadPromo();
+  setLang('fr');
 })();
 </script>
 </body>
