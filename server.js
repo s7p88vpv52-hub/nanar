@@ -40,43 +40,58 @@ app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (re
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
-    console.error('Webhook error:', err.message);
+    console.error('Webhook signature error:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
+
+  res.json({ received: true });
 
   if (event.type === 'checkout.session.completed') {
     const sess = event.data.object;
     const { client_email, type, imeis } = sess.metadata;
+    const SUPA_URL = process.env.SUPABASE_URL;
+    const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+    const headers = {
+      'Content-Type': 'application/json',
+      'apikey': SUPA_KEY,
+      'Authorization': `Bearer ${SUPA_KEY}`
+    };
 
     try {
-      await supabase.from('payments').update({ statut: 'paid' }).eq('stripe_session_id', sess.id);
+      // Mettre à jour le paiement
+      await fetch(`${SUPA_URL}/rest/v1/payments?stripe_session_id=eq.${sess.id}`, {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({ statut: 'paid' })
+      });
 
       if (type === 'licence') {
-        // Licence : en attente activation admin
-        console.log('✅ Paiement licence reçu pour:', client_email);
+        console.log('✅ Paiement licence pour:', client_email);
         await envoyerEmailLicenceEnAttente(client_email, sess.amount_total / 100);
       } else {
-        // Déblocage : enregistrer IMEI automatiquement
         const imeiList = JSON.parse(imeis || '[]');
         for (const item of imeiList) {
-          await supabase.from('imei_registry').insert([{
-            imei: item.imei,
-            device_model: item.model,
-            client_email: client_email,
-            is_active: true,
-            created_at: new Date().toISOString()
-          }]);
+          await fetch(`${SUPA_URL}/rest/v1/imei_registry`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              imei: item.imei,
+              device_model: item.model,
+              client_email: client_email,
+              is_active: true,
+              created_at: new Date().toISOString()
+            })
+          });
         }
-        const { data: client } = await supabase.from('accounts')
-          .select('prenom').eq('email', client_email).maybeSingle();
-        await envoyerEmailImeiAccepte(client_email, client?.prenom || '', imeiList, sess.amount_total / 100);
+        const clientRes = await fetch(`${SUPA_URL}/rest/v1/accounts?email=eq.${encodeURIComponent(client_email)}&select=prenom`, { headers });
+        const clientData = await clientRes.json();
+        await envoyerEmailImeiAccepte(client_email, clientData?.[0]?.prenom || '', imeiList, sess.amount_total / 100);
         console.log('✅ IMEI enregistrés pour:', client_email);
       }
     } catch (e) {
-      console.error('Erreur webhook:', e.message);
+      console.error('Erreur traitement webhook:', e.message);
     }
   }
-  res.json({ received: true });
 });
 
 app.use(express.json());
