@@ -18,7 +18,10 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY,
   {
     auth: { persistSession: false },
-    global: { fetch: fetch }
+    realtime: { enabled: false },
+    global: {
+      headers: { 'x-client-info': 'nova-icloud' }
+    }
   }
 );
 
