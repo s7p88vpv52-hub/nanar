@@ -657,7 +657,7 @@ function setLang(lang) {
     const el=document.getElementById(id);
     if(el&&t[key]) el.textContent=t[key];
   });
-  ['lic-f1','lic-f2','suc-sub'].forEach(id=>{
+  ['lic-f1','lic-f2','lic-f3','lic-f4','suc-sub'].forEach(id=>{
     const el=document.getElementById(id);
     const key=ids[id]||id.replace(/-/g,'.');
     if(el&&t[key]) el.innerHTML=t[key];
